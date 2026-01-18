@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/navbar";
-import Products from "./pages/Products"; 
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";  
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/products" element={<Products />} /> 
           <Route path="/login" element={<h1>Login / Register</h1>} />
           <Route path="/cart" element={<h1>Your Shopping Cart</h1>} />
+          <Route path="/product/:id" element={<ProductDetail />} />
         </Routes>
       </main>
     </Router>
