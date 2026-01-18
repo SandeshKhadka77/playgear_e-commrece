@@ -1,0 +1,88 @@
+/* client/src/styles/Navbar.css */
+.navbar {
+  height: 80px;
+  background-color: #003366; /* Primary Dark Blue */
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  max-width: 1400px;
+}
+
+.nav-logo {
+  color: #ffffff;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.nav-logo span {
+  color: #E63946; /* Secondary Red */
+}
+
+.nav-search {
+  display: flex;
+  width: 40%;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.nav-search input {
+  flex: 1;
+  border: none;
+  padding: 10px 15px;
+  outline: none;
+}
+
+.nav-search button {
+  background-color: #E63946; /* Action Red */
+  color: white;
+  border: none;
+  padding: 0 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+  align-items: center;
+}
+
+.nav-menu a {
+  color: #ffffff;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-menu a:hover {
+  color: #E63946;
+}
+
+.cart-btn {
+  background-color: #ffffff;
+  color: #003366 !important; /* Blue text on white button */
+  padding: 8px 18px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-count {
+  background: #E63946;
+  color: white;
+  padding: 2px 7px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+}
