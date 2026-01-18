@@ -1,10 +1,11 @@
+// client/src/data/products.js
 export const products = [
   {
     id: 1,
     name: "Classic Football",
     category: "Sports",
     price: 2500,
-    image: "https://via.placeholder.com/200",
+    image: "/assets/football.png", 
     description: "High-quality synthetic leather football."
   },
   {
@@ -12,7 +13,7 @@ export const products = [
     name: "Adjustable Dumbbells",
     category: "Gym",
     price: 8500,
-    image: "https://via.placeholder.com/200",
+    image: "/assets/Dumbel.png", 
     description: "Perfect for home workouts, 2kg to 20kg."
   },
   {
@@ -20,7 +21,7 @@ export const products = [
     name: "RGB Mechanical Keyboard",
     category: "Gaming",
     price: 4500,
-    image: "https://via.placeholder.com/200",
+    image: "/assets/Keyboard.png", 
     description: "Blue switches with customizable RGB lighting."
   }
 ];

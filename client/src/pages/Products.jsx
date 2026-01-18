@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { products } from '../data/products.js';
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../components/ProductCard.jsx';
 import '../styles/ProductsPage.css';
 
 const Products = () => {
