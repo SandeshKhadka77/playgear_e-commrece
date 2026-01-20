@@ -1,4 +1,4 @@
-/* client/src/styles/ProductCard.css */
+/* product card css */
 .product-card {
   background: white;
   border-radius: 10px;
@@ -39,4 +39,21 @@
   font-weight: bold;
   font-size: 1.3rem;
   margin: 10px 0;
+}
+ /* Button Styles */
+.add-to-cart-btn {
+  background-color: #003366; /* Dark Blue */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: bold;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #E63946; /* Red on hover */
 }
