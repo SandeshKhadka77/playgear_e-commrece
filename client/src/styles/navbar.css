@@ -1,7 +1,7 @@
-/* client/src/styles/Navbar.css */
+
 .navbar {
   height: 80px;
-  background-color: #003366; /* Primary Dark Blue */
+  background-color: #003366; 
   display: flex;
   justify-content: center;
   position: sticky;
@@ -25,7 +25,7 @@
 }
 
 .nav-logo span {
-  color: #E63946; /* Secondary Red */
+  color: #E63946; 
 }
 
 .nav-search {

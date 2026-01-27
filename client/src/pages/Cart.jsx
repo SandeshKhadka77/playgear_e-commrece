@@ -1,46 +1,92 @@
-import React from 'react';
-import { useCart } from '../hooks/useCart'; 
-import '../styles/Cart.css';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import '../styles/cart.css'; 
 
 const Cart = () => {
-  const { cart, removeFromCart, addToCart } = useCart();
+  const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Calculate total price for all items in the cart
-  const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  useEffect(() => {
+    const fetchCartData = async () => {
+      try {
+        const localCart = JSON.parse(localStorage.getItem('cartItems')) || [];
+        if (localCart.length > 0) {
+          const { data } = await axios.get('http://localhost:5000/api/products');
+          const itemsWithDetails = localCart.map(localItem => {
+            const dbProduct = data.find(p => p._id === localItem._id);
+            return dbProduct ? { ...dbProduct, qty: localItem.qty } : null;
+          }).filter(item => item !== null);
+          setCartItems(itemsWithDetails);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Cart sync error:", error);
+        setLoading(false);
+      }
+    };
+    fetchCartData();
+  }, []);
 
-  if (cart.length === 0) {
-    return <div className="cart-empty">Your cart is empty. Start shopping!</div>;
-  }
+  const removeFromCart = (id) => {
+    const updatedCart = cartItems.filter(item => item._id !== id);
+    setCartItems(updatedCart);
+    localStorage.setItem('cartItems', JSON.stringify(updatedCart.map(i => ({ _id: i._id, qty: i.qty }))));
+  };
+
+  const totalPrice = cartItems.reduce((acc, item) => acc + (item.price * (item.qty || 1)), 0);
+
+  if (loading) return <div className="cart-loader">Checking inventory...</div>;
 
   return (
-    <div className="cart-page">
-      <h1>Your Shopping Cart</h1>
-      <div className="cart-container">
-        <div className="cart-items">
-          {cart.map((item) => (
-            <div key={item.id} className="cart-item">
-              <img src={item.image} alt={item.name} />
-              <div className="item-details">
-                <h3>{item.name}</h3>
-                <p>Price: Rs. {item.price}</p>
-                <div className="quantity-controls">
-                  {/* Reuseof  addToCart to increase quantity */}
-                  <button onClick={() => addToCart(item)}>+</button>
-                  <span>{item.quantity}</span>
+    <div className="cart-page-container">
+      <h1 className="cart-header">Your Shopping Cart ({cartItems.length})</h1>
+      
+      {cartItems.length === 0 ? (
+        <div className="empty-cart">
+          <p>Your cart feels a bit light.</p>
+          <Link to="/products" className="shop-link">Back to Shop</Link>
+        </div>
+      ) : (
+        <div className="cart-layout">
+          <div className="cart-items-section">
+            {cartItems.map((item) => (
+              <div key={item._id} className="cart-item-card">
+                <img src={item.image} alt={item.name} className="cart-item-img" />
+                <div className="cart-item-info">
+                  <h3>{item.name}</h3>
+                  <p className="item-category">{item.category}</p>
+                  <p className="item-price">Rs. {item.price.toLocaleString()}</p>
                 </div>
-                <button className="remove-btn" onClick={() => removeFromCart(item.id)}>Remove</button>
+                <button onClick={() => removeFromCart(item._id)} className="remove-item-btn">
+                  Remove
+                </button>
               </div>
+            ))}
+          </div>
+
+          <div className="cart-summary-section">
+            <div className="summary-card">
+              <h3>Order Summary</h3>
+              <div className="summary-row">
+                <span>Subtotal</span>
+                <span>Rs. {totalPrice.toLocaleString()}</span>
+              </div>
+              <div className="summary-row">
+                <span>Shipping</span>
+                <span className="free-shipping">FREE</span>
+              </div>
+              <hr />
+              <div className="summary-row total">
+                <span>Total</span>
+                <span>Rs. {totalPrice.toLocaleString()}</span>
+              </div>
+              <button className="checkout-btn">Proceed to Checkout</button>
+              <Link to="/products" className="continue-shopping">Continue Shopping</Link>
             </div>
-          ))}
+          </div>
         </div>
-        
-        <div className="cart-summary">
-          <h2>Summary</h2>
-          <p>Total Items: {cart.length}</p>
-          <h3>Total Price: Rs. {totalPrice}</h3>
-          <button className="checkout-btn">Proceed to Checkout</button>
-        </div>
-      </div>
+      )}
     </div>
   );
 };
