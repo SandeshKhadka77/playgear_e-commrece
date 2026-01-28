@@ -44,4 +44,22 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// admin stats route
+// @desc    Get product, order, sales, and user stats for admin dashboard
+// @route   GET /api/products/admin/stats
+
+router.get('/admin/stats', async (req, res) => {
+  try {
+    const productCount = await Product.countDocuments();
+    // For now, we return 0 for orders/sales until we build those models
+    res.json({
+      productCount: productCount,
+      orderCount: 0,
+      totalSales: 0,
+      userCount: 1 // Placeholder
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 module.exports = router;
