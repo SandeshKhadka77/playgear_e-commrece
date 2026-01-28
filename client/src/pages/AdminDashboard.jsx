@@ -1,69 +1,92 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../styles/Admin.css';
 
 const AdminDashboard = () => {
-  const [products, setProducts] = useState([]);
+  // 1. State to hold our real data from DB
+  const [stats, setStats] = useState({
+    productCount: 0,
+    orderCount: 0,
+    totalSales: 0,
+    userCount: 0
+  });
   const [loading, setLoading] = useState(true);
 
+  // 2. Fetch the data from the Backend API
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchStats = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/products');
-        setProducts(response.data);
+        setLoading(true);
+        //  this URL matches our backend route
+        const { data } = await axios.get('http://localhost:5000/api/products/admin/stats');
+        setStats(data);
         setLoading(false);
-      } catch (err) {
-        console.error("Fetch error:", err.message);
+      } catch (error) {
+        console.error("Error fetching admin stats:", error.message);
         setLoading(false);
       }
     };
-    fetchProducts();
+    fetchStats();
   }, []);
 
-  const deleteHandler = async (id) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
-      try {
-        await axios.delete(`http://localhost:5000/api/products/${id}`);
-        setProducts(products.filter((p) => p._id !== id));
-      } catch (error) {
-        // We use the 'error' variable here to satisfy ESLint
-        console.error("Delete Error:", error.message);
-        alert("Failed to delete product");
-      }
-    }
-  };
+  // 3. Map the DB data to the UI Cards
+  const summaryCards = [
+    { label: 'Total Revenue', value: `Rs. ${stats.totalSales.toLocaleString()}`, icon: '💰', color: '#28a745' },
+    { label: 'Total Orders', value: stats.orderCount, icon: '🛒', color: '#ff9900' },
+    { label: 'Active Products', value: stats.productCount, icon: '📦', color: '#17a2b8' },
+    { label: 'Total Users', value: stats.userCount, icon: '👥', color: '#6610f2' },
+  ];
 
-  if (loading) return <p>Loading Inventory...</p>;
+  if (loading) return <div className="admin-loader">Syncing PlayGear Dashboard...</div>;
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>Admin Inventory Management</h1>
-      <table border="1" style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
-        <thead>
-          <tr style={{ background: '#f4f4f4' }}>
-            <th style={{ padding: '10px' }}>Product Name</th>
-            <th style={{ padding: '10px' }}>Category</th>
-            <th style={{ padding: '10px' }}>Price</th>
-            <th style={{ padding: '10px' }}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {products.map((product) => (
-            <tr key={product._id}>
-              <td style={{ padding: '10px' }}>{product.name}</td>
-              <td style={{ padding: '10px' }}>{product.category}</td>
-              <td style={{ padding: '10px' }}>Rs. {product.price}</td>
-              <td style={{ padding: '10px' }}>
-                <button 
-                  onClick={() => deleteHandler(product._id)}
-                  style={{ backgroundColor: '#ff4d4d', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="admin-dashboard">
+      <header className="dashboard-header">
+        <h1>Dashboard Overview</h1>
+        <p>Real-time inventory and sales tracking from MongoDB.</p>
+      </header>
+
+      {/* STATS GRID */}
+      <div className="stats-grid">
+        {summaryCards.map((stat, index) => (
+          <div key={index} className="stat-card">
+            <div className="stat-info">
+              <span className="stat-label">{stat.label}</span>
+              <h2 className="stat-value">{stat.value}</h2>
+            </div>
+            <div className="stat-icon-box" style={{ backgroundColor: `${stat.color}22`, color: stat.color }}>
+              {stat.icon}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* RECENT ACTIVITY SECTION */}
+      <div className="dashboard-lower">
+        <div className="activity-panel">
+          <h3>Recent Activity</h3>
+          <ul className="activity-list">
+            <li>
+              <span className="act-icon">🆕</span>
+              <p>Database connected: <strong>{stats.productCount}</strong> products synced.</p>
+              <span className="act-time">Just now</span>
+            </li>
+            <li>
+              <span className="act-icon">✅</span>
+              <p>System health: <strong>Online</strong></p>
+              <span className="act-time">Stable</span>
+            </li>
+          </ul>
+        </div>
+
+        <div className="quick-actions">
+          <h3>Quick Management</h3>
+          <div className="action-btns">
+            <button className="q-btn">Download Report</button>
+            <button className="q-btn secondary">Store Settings</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
