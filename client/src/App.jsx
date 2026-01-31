@@ -29,6 +29,7 @@ function App() {
       <Routes>
         {/* SHOP ROUTES */}
         <Route path="/" element={<div style={{padding: "40px"}}><h1>Welcome to PlayGear Nepal</h1></div>} />
+        <Route path="/" element={<HomePage />} index />
         <Route path="/products" element={<div style={{padding: "40px"}}><Products /></div>} /> 
         <Route path="/login" element={<div style={{padding: "40px"}}><h1>Login / Register</h1></div>} />
         <Route path="/product/:id" element={<div style={{padding: "40px"}}><ProductDetail /></div>} />
