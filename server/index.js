@@ -52,3 +52,9 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
+
+// UPLOAD ROUTES
+const path = require('path');
+
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use('/api/upload', uploadRoutes);
