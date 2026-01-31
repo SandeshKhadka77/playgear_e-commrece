@@ -8,6 +8,8 @@ import AdminProducts from './pages/AdminProducts';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminOrders from './pages/AdminOrders';
 import AdminUsers from './pages/AdminUser';
+import AdminAddProduct from './pages/AdminAddProduct';
+
 
 //  SECURITY PROTECTOR COMPONENT
 const AdminRoute = ({ children }) => {
@@ -56,7 +58,10 @@ function App() {
             <AdminLayout><AdminUsers /></AdminLayout>
           </AdminRoute>
         } />
-
+        
+        <Route path="/admin">
+           <Route path="addproduct" element={<AdminAddProduct />} />
+           </Route> 
       </Routes>
     </Router>
   );

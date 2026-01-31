@@ -1,56 +1,39 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import '../../styles/Admin.css'; // We will use your existing Admin.css
 
-const AdminLayout = ({ children }) => {
+const AdminSidebar = () => {
   const location = useLocation();
-
-  const menuItems = [
-    { name: 'Dashboard', path: '/admin', icon: '📊' },
-    { name: 'Products', path: '/admin/products', icon: '📦' },
-    { name: 'Orders', path: '/admin/orders', icon: '🚚' },
-    { name: 'Users', path: '/admin/users', icon: '👥' },
+  
+  const navItems = [
+    { name: '📊 Dashboard', path: '/admin' },
+    { name: '📦 Products', path: '/admin/productlist' },
+    { name: '📜 Orders', path: '/admin/orderlist' },
+    { name: '👥 Users', path: '/admin/userlist' },
   ];
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      {/* SIDEBAR */}
-      <aside style={{
-        width: '260px',
-        backgroundColor: '#1a1a1a',
-        color: 'white',
-        position: 'fixed',
-        height: '100vh',
-        padding: '20px'
-      }}>
-        <h2 style={{ color: '#ff9900', marginBottom: '30px' }}>PlayGear Admin</h2>
-        <nav>
-          {menuItems.map((item) => (
-            <Link 
-              key={item.name} 
-              to={item.path} 
-              style={{
-                display: 'block',
-                padding: '12px',
-                color: location.pathname === item.path ? '#ff9900' : '#ccc',
-                textDecoration: 'none',
-                fontWeight: location.pathname === item.path ? 'bold' : 'normal',
-                borderLeft: location.pathname === item.path ? '4px solid #ff9900' : 'none',
-                marginBottom: '10px'
-              }}
-            >
-              {item.icon} {item.name}
-            </Link>
-          ))}
-        </nav>
-      </aside>
-
-      {/* MAIN CONTENT AREA */}
-      <main style={{ marginLeft: '260px', flex: 1, padding: '40px', backgroundColor: '#f4f7f6' }}>
-        {children}
-      </main>
+    <div className="w-64 bg-slate-900 min-h-screen text-white p-4 shadow-xl">
+      <div className="mb-10 text-center">
+        <h1 className="text-xl font-bold text-blue-400">PlayGear Nepal</h1>
+        <p className="text-xs text-gray-400 uppercase tracking-widest">Admin Panel</p>
+      </div>
+      <nav className="space-y-2">
+        {navItems.map((item) => (
+          <Link
+            key={item.path}
+            to={item.path}
+            className={`block p-3 rounded-lg transition-all ${
+              location.pathname === item.path 
+              ? 'bg-blue-600 text-white shadow-lg' 
+              : 'hover:bg-slate-800 text-gray-300'
+            }`}
+          >
+            {item.name}
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 };
 
-export default AdminLayout;
+export default AdminSidebar;
