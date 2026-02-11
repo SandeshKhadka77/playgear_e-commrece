@@ -1,9 +1,6 @@
-# PlayGear Nepal 🏋️🎮⚽
+# PlayGear Nepal E-Commerce Site 
 
 PlayGear Nepal is a MERN-based e-commerce platform focused on **sports, gym, fitness, and gaming products**.
-
-The project follows a **feature-based Git workflow** and a **scalable MERN folder structure**.
-
 ---
 
 ## Tech Stack
@@ -39,15 +36,6 @@ PlayGear_Nepal/
 * `main` → stable code
 * Feature branches → individual features (navbar, cart, products)
 * Each feature is developed, reviewed, and merged separately
-
----
-
-## Current Progress
-
-✅ Phase 0: Frontend setup & MERN-ready folder structure
-⬜ Phase 1: Navbar
-⬜ Phase 2: Product listing
-⬜ Phase 3: Cart functionality
 
 ---
 
