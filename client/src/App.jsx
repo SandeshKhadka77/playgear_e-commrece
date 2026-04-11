@@ -13,6 +13,7 @@ import AdminAddProductPage from './pages/AdminAddProductPage';
 import LoginPage from './pages/LoginPage';
 import PoliciesPage from './pages/PoliciesPage';
 import ContactPage from './pages/ContactPage';
+import MyOrdersPage from './pages/MyOrdersPage';
 import Footer from './components/Footer';
 import './index.css';
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/my-orders" element={<MyOrdersPage />} />
           <Route path="/policies" element={<PoliciesPage />} />
           <Route path="/contact" element={<ContactPage />} />
 

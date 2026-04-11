@@ -54,6 +54,12 @@ const Navbar = () => {
             </li>
           ) : (
             <>
+              <li>
+                <Link to="/my-orders" className="profile-link" onClick={closeMenu}>
+                  <FiUser />
+                  <span>My Orders</span>
+                </Link>
+              </li>
               {userInfo.isAdmin && (
                 <li>
                   <Link to="/admin" className="profile-link" onClick={closeMenu}>

@@ -205,6 +205,24 @@
   letter-spacing: 0.05em;
 }
 
+.admin-toolbar {
+  margin: 12px 0 14px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1.6fr 1fr;
+}
+
+.admin-toolbar input,
+.admin-toolbar select,
+.status-select {
+  border: 1px solid #dce8f4;
+  border-radius: 10px;
+  height: 40px;
+  padding: 0 10px;
+  background: #f9fbff;
+  font-family: inherit;
+}
+
 .btn-delete {
   border: none;
   background: #fff0f0;
@@ -366,6 +384,10 @@
   }
 
   .order-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-toolbar {
     grid-template-columns: 1fr;
   }
 
