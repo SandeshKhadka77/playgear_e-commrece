@@ -9,7 +9,7 @@ Play Gear is a MERN-based e-commerce platform focused on **sports, gym, fitness,
 
 * React (Vite)
 * JavaScript
-* CSS (Tailwind planned)
+* CSS 
 
 ### Backend 
 
@@ -31,13 +31,6 @@ PlayGear_Nepal/
 
 ---
 
-## Development Workflow
-
-* `main` → stable code
-* Feature branches → individual features (navbar, cart, products)
-* Each feature is developed, reviewed, and merged separately
-
----
 
 ## Getting Started (Frontend)
 
