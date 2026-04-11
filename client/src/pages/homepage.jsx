@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import ProductCard from '../components/ProductCard'; 
+import ProductCard from '../components/ProductCard';
 import { FiArrowRight, FiCpu, FiShield, FiTarget, FiTrendingUp, FiTruck } from 'react-icons/fi';
 import '../styles/homepage.css';
 import { products as fallbackProducts } from '../data/products';
@@ -31,20 +31,21 @@ const HomePage = () => {
     <div className="home-page">
       <section className="hero-section">
         <div className="hero-overlay" />
-        <div className="hero-content page-wrap">
-          <p className="hero-tag">Your next-level sports and gaming store</p>
-          <h1>Gear Up For Real Performance</h1>
-          <p>
-            Discover premium gaming setups, elite fitness tools, and sports essentials built for daily grind and match day.
-          </p>
-          <div className="hero-cta-row">
-            <Link className="hero-cta" to="/products">
-              Shop New Arrivals
-              <FiArrowRight />
-            </Link>
-            <Link className="hero-cta ghost" to="/products">
-              Explore Collections
-            </Link>
+        <div className="page-wrap hero-shell">
+          <div className="hero-content">
+            <h1>Gear Up For Real Performance</h1>
+            <p>
+              Discover premium gaming setups, elite fitness tools, and sports essentials built for daily grind and match day.
+            </p>
+            <div className="hero-cta-row">
+              <Link className="hero-cta" to="/products">
+                Shop New Arrivals
+                <FiArrowRight />
+              </Link>
+              <Link className="hero-cta ghost" to="/products">
+                Explore Collections
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -70,6 +71,26 @@ const HomePage = () => {
           <FiTrendingUp />
           <h3>Fitness</h3>
           <p>Strength, mobility and home gym collection.</p>
+        </div>
+      </section>
+
+      <section className="spotlight-section page-wrap">
+        <div className="spotlight-left">
+          <h2>Build Your Complete Kit Faster</h2>
+          <p>Start with curated bundles for creators, athletes, and home workout setups.</p>
+          <Link to="/products" className="spotlight-link">
+            View Bundle Picks <FiArrowRight />
+          </Link>
+        </div>
+        <div className="spotlight-right">
+          <article>
+            <h4>Starter Packs</h4>
+            <p>Smart combinations for budget-friendly setup.</p>
+          </article>
+          <article>
+            <h4>Pro Picks</h4>
+            <p>Premium curated products for serious users.</p>
+          </article>
         </div>
       </section>
 
