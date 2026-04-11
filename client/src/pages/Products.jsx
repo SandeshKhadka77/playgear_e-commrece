@@ -3,11 +3,12 @@ import axios from 'axios';
 import { FiSearch, FiSliders } from 'react-icons/fi';
 import ProductCard from '../components/ProductCard';
 import '../styles/ProductsPage.css'; 
+import { products as fallbackProducts } from '../data/products';
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('featured');
@@ -17,10 +18,11 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const { data } = await axios.get('http://localhost:5000/api/products');
-        setProducts(data);
+        setProducts(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching products:", error);
-        setError('Unable to load products right now. Please try again.');
+        setProducts(fallbackProducts.map((item) => ({ ...item, _id: item.id })));
+        setNotice('Live server is unavailable right now. Showing demo products.');
       } finally {
         setLoading(false);
       }
@@ -71,7 +73,6 @@ const Products = () => {
   }, [products, searchTerm, selectedCategory, maxPrice, sortBy]);
 
   if (loading) return <div className="loader">Loading Play Gear Store...</div>;
-  if (error) return <div className="loader error">{error}</div>;
 
   return (
     <div className="shop-container">
@@ -79,6 +80,8 @@ const Products = () => {
         <h2 className="shop-title">Premium Gear</h2>
         <p>Hand-picked products for gaming, sports, and fitness enthusiasts.</p>
       </div>
+
+      {notice && <div className="shop-notice">{notice}</div>}
 
       <section className="shop-toolbar" aria-label="Product filters">
         <div className="filter-title">

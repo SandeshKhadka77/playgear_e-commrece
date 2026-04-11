@@ -2,8 +2,6 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const router = express.Router();
-import uploadRoutes from './routes/uploadRoutes.js';
-app.use('/api/upload', uploadRoutes);
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -22,9 +20,5 @@ router.post('/', upload.single('image'), (req, res) => {
     path: `/${req.file.path}`,
   });
 });
-
-const path = require('path');
-// This makes the folder accessible via URL
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 module.exports = router;

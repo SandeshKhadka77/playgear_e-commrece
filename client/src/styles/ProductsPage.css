@@ -4,6 +4,16 @@
   padding: 34px 0 64px;
 }
 
+.shop-notice {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #ffe0b8;
+  background: #fff6ea;
+  color: #8a4b06;
+  font-weight: 600;
+}
+
 .shop-head {
   margin-bottom: 24px;
 }
@@ -23,7 +33,7 @@
   margin-bottom: 24px;
   border: 1px solid #dbe8f6;
   border-radius: 16px;
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
   box-shadow: 0 10px 24px rgba(12, 30, 58, 0.08);
 }
 
@@ -90,6 +100,12 @@
   font-family: inherit;
 }
 
+.toolbar-controls select:focus,
+.search-control:focus-within {
+  outline: 2px solid rgba(243, 138, 24, 0.2);
+  border-color: #f5b067;
+}
+
 .range-control input[type='range'] {
   accent-color: #f38a18;
 }
@@ -98,6 +114,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
+  align-items: stretch;
 }
 
 .empty-results {

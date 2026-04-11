@@ -6,10 +6,17 @@ server/node_modules/
 # Environment variables (Crucial for security)
 .env
 server/.env
+.env.local
+.env.development.local
+.env.production.local
 
 # Build folders
 dist/
 build/
+
+# Runtime uploads
+uploads/
+server/uploads/
 
 # Operating System files
 .DS_Store
