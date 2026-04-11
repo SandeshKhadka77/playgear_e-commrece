@@ -1,65 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ProductCard from '../components/ProductCard';
 import '../styles/ProductsPage.css'; 
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const { data } = await axios.get('http://localhost:5000/api/products');
         setProducts(data);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setError('Unable to load products right now. Please try again.');
+      } finally {
         setLoading(false);
       }
     };
     fetchProducts();
   }, []);
 
-  const addToCartHandler = (product) => {
-    // Get existing cart from LocalStorage or start empty
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-    
-    // Check if item already exists
-    const existItem = cartItems.find((x) => x._id === product._id);
-
-    if (existItem) {
-      alert(`${product.name} is already in your cart!`);
-    } else {
-      // Add new product to the list
-      cartItems.push({ ...product, qty: 1 });
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
-      alert(`${product.name} added to cart!`);
-    }
-  };
-
   if (loading) return <div className="loader">Loading PlayGear Store...</div>;
+  if (error) return <div className="loader error">{error}</div>;
 
   return (
     <div className="shop-container">
-      <h2 className="shop-title">Premium Gear</h2>
+      <div className="shop-head">
+        <h2 className="shop-title">Premium Gear</h2>
+        <p>Hand-picked products for gaming, sports, and fitness enthusiasts.</p>
+      </div>
+
       <div className="product-grid">
         {products.map((product) => (
-          <div key={product._id} className="product-card">
-            <div className="image-container">
-               <img src={product.image} alt={product.name} />
-            </div>
-            <div className="product-details">
-              <h3>{product.name}</h3>
-              <p className="category">{product.category}</p>
-              <p className="price">Rs. {product.price}</p>
-              <button 
-                className="add-to-cart-btn"
-                onClick={() => addToCartHandler(product)}
-              >
-                Add to Cart
-              </button>
-            </div>
-          </div>
+          <ProductCard key={product._id || product.id} product={product} />
         ))}
       </div>
     </div>

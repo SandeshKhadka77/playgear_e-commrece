@@ -1,40 +1,64 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FiShoppingBag } from 'react-icons/fi';
+import { IoStar, IoStarHalf } from 'react-icons/io5';
+import '../styles/ProductCard.css';
+import { useCart } from '../hooks/useCart';
 
 const ProductCard = ({ product }) => {
+  const { addToCart } = useCart();
+
+  const rating = Number(product.rating || 4.5);
+  const roundedRating = Math.round(rating * 2) / 2;
+
+  const renderStars = () => {
+    const stars = [];
+
+    for (let i = 1; i <= 5; i += 1) {
+      if (roundedRating >= i) {
+        stars.push(<IoStar key={i} className="star-icon" />);
+      } else if (roundedRating + 0.5 === i) {
+        stars.push(<IoStarHalf key={i} className="star-icon" />);
+      }
+    }
+
+    return stars;
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 group">
-      <Link to={`/product/${product._id}`}>
-        <div className="relative overflow-hidden aspect-square">
+    <article className="product-card">
+      <Link to={`/product/${product._id || product.id}`}>
+        <div className="product-image-wrap">
           <img 
             src={product.image} 
             alt={product.name} 
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            className="product-image"
           />
-          <span className="absolute top-2 left-2 bg-slate-900 text-white text-[10px] font-bold px-2 py-1 rounded uppercase">
+          <span className="category-chip">
             {product.category}
           </span>
         </div>
       </Link>
 
-      <div className="p-4">
-        <Link to={`/product/${product._id}`}>
-          <h3 className="text-lg font-bold text-slate-800 truncate hover:text-orange-500 transition-colors">
+      <div className="product-content">
+        <Link to={`/product/${product._id || product.id}`}>
+          <h3 className="product-name">
             {product.name}
           </h3>
         </Link>
-        <div className="flex items-center mt-1 mb-2">
-          <span className="text-yellow-400 text-sm">★ ★ ★ ★ ☆</span>
-          <span className="text-gray-400 text-xs ml-2">({product.rating})</span>
+        <div className="rating-row">
+          <span className="stars">{renderStars()}</span>
+          <span className="rating-value">({roundedRating.toFixed(1)})</span>
         </div>
-        <div className="flex justify-between items-center mt-4">
-          <span className="text-xl font-extrabold text-slate-900">Rs. {product.price.toLocaleString()}</span>
-          <button className="bg-slate-100 hover:bg-orange-500 hover:text-white p-2 rounded-lg transition-colors">
-            🛒
+        <div className="card-footer">
+          <span className="product-price">Rs. {Number(product.price || 0).toLocaleString()}</span>
+          <button className="add-to-cart-btn" type="button" onClick={() => addToCart(product)}>
+            <FiShoppingBag />
+            <span>Add</span>
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

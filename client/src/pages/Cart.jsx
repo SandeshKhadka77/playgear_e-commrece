@@ -1,48 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { FiMinus, FiPlus, FiShoppingBag, FiTrash2 } from 'react-icons/fi';
+import { useCart } from '../hooks/useCart';
 import '../styles/cart.css'; 
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { cart, removeFromCart, updateQuantity } = useCart();
 
-  useEffect(() => {
-    const fetchCartData = async () => {
-      try {
-        const localCart = JSON.parse(localStorage.getItem('cartItems')) || [];
-        if (localCart.length > 0) {
-          const { data } = await axios.get('http://localhost:5000/api/products');
-          const itemsWithDetails = localCart.map(localItem => {
-            const dbProduct = data.find(p => p._id === localItem._id);
-            return dbProduct ? { ...dbProduct, qty: localItem.qty } : null;
-          }).filter(item => item !== null);
-          setCartItems(itemsWithDetails);
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error("Cart sync error:", error);
-        setLoading(false);
-      }
-    };
-    fetchCartData();
-  }, []);
+  const totalPrice = cart.reduce((acc, item) => acc + ((Number(item.price) || 0) * (item.qty || 1)), 0);
 
-  const removeFromCart = (id) => {
-    const updatedCart = cartItems.filter(item => item._id !== id);
-    setCartItems(updatedCart);
-    localStorage.setItem('cartItems', JSON.stringify(updatedCart.map(i => ({ _id: i._id, qty: i.qty }))));
+  const increaseQty = (item) => {
+    const key = item._id || item.id;
+    updateQuantity(key, (item.qty || 1) + 1);
   };
 
-  const totalPrice = cartItems.reduce((acc, item) => acc + (item.price * (item.qty || 1)), 0);
-
-  if (loading) return <div className="cart-loader">Checking inventory...</div>;
+  const decreaseQty = (item) => {
+    const key = item._id || item.id;
+    updateQuantity(key, Math.max(1, (item.qty || 1) - 1));
+  };
 
   return (
     <div className="cart-page-container">
-      <h1 className="cart-header">Your Shopping Cart ({cartItems.length})</h1>
+      <h1 className="cart-header">Your Shopping Cart ({cart.length})</h1>
       
-      {cartItems.length === 0 ? (
+      {cart.length === 0 ? (
         <div className="empty-cart">
           <p>Your cart feels a bit light.</p>
           <Link to="/products" className="shop-link">Back to Shop</Link>
@@ -50,16 +31,22 @@ const Cart = () => {
       ) : (
         <div className="cart-layout">
           <div className="cart-items-section">
-            {cartItems.map((item) => (
-              <div key={item._id} className="cart-item-card">
+            {cart.map((item) => (
+              <div key={item._id || item.id} className="cart-item-card">
                 <img src={item.image} alt={item.name} className="cart-item-img" />
                 <div className="cart-item-info">
                   <h3>{item.name}</h3>
                   <p className="item-category">{item.category}</p>
-                  <p className="item-price">Rs. {item.price.toLocaleString()}</p>
+                  <p className="item-price">Rs. {Number(item.price || 0).toLocaleString()}</p>
+                  <div className="qty-controls">
+                    <button type="button" onClick={() => decreaseQty(item)}><FiMinus /></button>
+                    <span>{item.qty || 1}</span>
+                    <button type="button" onClick={() => increaseQty(item)}><FiPlus /></button>
+                  </div>
                 </div>
-                <button onClick={() => removeFromCart(item._id)} className="remove-item-btn">
-                  Remove
+                <button onClick={() => removeFromCart(item._id || item.id)} className="remove-item-btn" type="button">
+                  <FiTrash2 />
+                  <span>Remove</span>
                 </button>
               </div>
             ))}
@@ -81,7 +68,10 @@ const Cart = () => {
                 <span>Total</span>
                 <span>Rs. {totalPrice.toLocaleString()}</span>
               </div>
-              <button className="checkout-btn">Proceed to Checkout</button>
+              <button className="checkout-btn" type="button">
+                <FiShoppingBag />
+                <span>Proceed to Checkout</span>
+              </button>
               <Link to="/products" className="continue-shopping">Continue Shopping</Link>
             </div>
           </div>

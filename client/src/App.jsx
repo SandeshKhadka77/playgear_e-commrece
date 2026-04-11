@@ -3,12 +3,14 @@ import Navbar from "./components/navbar";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";  
 import Cart from './pages/Cart';
+import HomePage from './pages/homepage';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminProducts from './pages/AdminProducts';
 import AdminLayout from './components/admin/AdminLayout';
 import AdminOrders from './pages/AdminOrders';
 import AdminUsers from './pages/AdminUser';
-import AdminAddProduct from './pages/AdminAddProduct';
+import AdminAddProductPage from './pages/AdminAddProductPage';
+import './index.css';
 
 
 //  SECURITY PROTECTOR COMPONENT
@@ -25,15 +27,14 @@ function App() {
   return (
     <Router>
       <Navbar />
-    
-      <Routes>
-        {/* SHOP ROUTES */}
-        <Route path="/" element={<div style={{padding: "40px"}}><h1>Welcome to PlayGear Nepal</h1></div>} />
-        <Route path="/" element={<HomePage />} index />
-        <Route path="/products" element={<div style={{padding: "40px"}}><Products /></div>} /> 
-        <Route path="/login" element={<div style={{padding: "40px"}}><h1>Login / Register</h1></div>} />
-        <Route path="/product/:id" element={<div style={{padding: "40px"}}><ProductDetail /></div>} />
-        <Route path="/cart" element={<div style={{padding: "40px"}}><Cart /></div>} />
+
+      <main className="page-shell">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/login" element={<div className="placeholder-page"><h1>Login / Register</h1></div>} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
 
         {/* ADMIN ROUTES  */}
         <Route path="/admin" element={
@@ -60,10 +61,13 @@ function App() {
           </AdminRoute>
         } />
         
-        <Route path="/admin">
-           <Route path="addproduct" element={<AdminAddProduct />} />
-           </Route> 
-      </Routes>
+          <Route path="/admin/addproduct" element={
+            <AdminRoute>
+              <AdminLayout><AdminAddProductPage /></AdminLayout>
+            </AdminRoute>
+          } />
+        </Routes>
+      </main>
     </Router>
   );
 }

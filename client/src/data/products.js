@@ -1,4 +1,4 @@
-// client/src/data/products.js
+
 export const products = [
   {
     id: 1,

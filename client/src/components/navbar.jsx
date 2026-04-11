@@ -1,35 +1,53 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Navbar.css';
+import { FiMenu, FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
+import '../styles/navbar.css';
 import { useCart } from '../hooks/useCart'; 
+import { useState } from 'react';
 
 const Navbar = () => {
-  // 1. Initialize the hook to get the cart data
-  const { cart } = useCart();
+  const { totalItems } = useCart();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // 2. Calculate the total number of items in the cart
-  // This sums up all 'quantity' values from the cart array
-  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+  const closeMenu = () => setIsMenuOpen(false);
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" aria-label="Main navigation">
       <div className="nav-container">
-        <Link to="/" className="nav-logo">
+        <Link to="/" className="nav-logo" onClick={closeMenu}>
           PLAYGEAR<span>NEPAL</span>
         </Link>
 
         <div className="nav-search">
-          <input type="text" placeholder="Search sports & gaming gear..." />
-          <button type="submit">Search</button>
+          <FiSearch className="search-icon" />
+          <input type="text" placeholder="Search sports, gym and gaming gear" aria-label="Search products" />
+          <button type="button">Search</button>
         </div>
 
-        <ul className="nav-menu">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/products">Products</Link></li>
-          <li><Link to="/login">Login</Link></li>
+        <button
+          className="menu-toggle"
+          type="button"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+          aria-label="Toggle menu"
+          aria-expanded={isMenuOpen}
+        >
+          {isMenuOpen ? <FiX /> : <FiMenu />}
+        </button>
+
+        <ul className={`nav-menu ${isMenuOpen ? 'open' : ''}`}>
+          <li><Link to="/" onClick={closeMenu}>Home</Link></li>
+          <li><Link to="/products" onClick={closeMenu}>Products</Link></li>
           <li>
-            <Link to="/cart" className="cart-btn">
-              Cart 🛒 <span className="cart-count">{totalItems}</span>
+            <Link to="/login" className="profile-link" onClick={closeMenu}>
+              <FiUser />
+              <span>Login</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/cart" className="cart-btn" onClick={closeMenu}>
+              <FiShoppingCart />
+              <span>Cart</span>
+              <span className="cart-count">{totalItems}</span>
             </Link>
           </li>
         </ul>
