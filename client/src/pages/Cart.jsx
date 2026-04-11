@@ -1,22 +1,71 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { FiMinus, FiPlus, FiShoppingBag, FiTrash2 } from 'react-icons/fi';
 import { useCart } from '../hooks/useCart';
+import { useToast } from '../hooks/useToast';
+import { useNavigate } from 'react-router-dom';
 import '../styles/cart.css'; 
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity } = useCart();
+  const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { showToast } = useToast();
+  const navigate = useNavigate();
 
   const totalPrice = cart.reduce((acc, item) => acc + ((Number(item.price) || 0) * (item.qty || 1)), 0);
 
   const increaseQty = (item) => {
     const key = item._id || item.id;
     updateQuantity(key, (item.qty || 1) + 1);
+    showToast('Quantity updated.', 'info');
   };
 
   const decreaseQty = (item) => {
     const key = item._id || item.id;
     updateQuantity(key, Math.max(1, (item.qty || 1) - 1));
+    showToast('Quantity updated.', 'info');
+  };
+
+  const checkoutHandler = async () => {
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo') || 'null');
+      const token = userInfo?.token;
+
+      if (!token) {
+        showToast('Please login to place your order.', 'error');
+        navigate('/login');
+        return;
+      }
+
+      const orderItems = cart.map((item) => ({
+        product: item._id || item.id,
+        name: item.name,
+        image: item.image,
+        qty: item.qty || 1,
+        price: Number(item.price) || 0,
+      }));
+
+      await axios.post(
+        'http://localhost:5000/api/orders',
+        {
+          orderItems,
+          shippingPrice: 0,
+          taxPrice: 0,
+          totalPrice,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      clearCart();
+      showToast('Order placed successfully.', 'success');
+      navigate('/products');
+    } catch (requestError) {
+      showToast(requestError?.response?.data?.message || 'Could not place order.', 'error');
+    }
   };
 
   return (
@@ -44,7 +93,14 @@ const Cart = () => {
                     <button type="button" onClick={() => increaseQty(item)}><FiPlus /></button>
                   </div>
                 </div>
-                <button onClick={() => removeFromCart(item._id || item.id)} className="remove-item-btn" type="button">
+                <button
+                  onClick={() => {
+                    removeFromCart(item._id || item.id);
+                    showToast('Item removed from cart.', 'info');
+                  }}
+                  className="remove-item-btn"
+                  type="button"
+                >
                   <FiTrash2 />
                   <span>Remove</span>
                 </button>
@@ -68,7 +124,7 @@ const Cart = () => {
                 <span>Total</span>
                 <span>Rs. {totalPrice.toLocaleString()}</span>
               </div>
-              <button className="checkout-btn" type="button">
+              <button className="checkout-btn" type="button" onClick={checkoutHandler}>
                 <FiShoppingBag />
                 <span>Proceed to Checkout</span>
               </button>

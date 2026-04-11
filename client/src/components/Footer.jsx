@@ -25,9 +25,9 @@ const Footer = () => {
         <section>
           <h5>Policies</h5>
           <ul>
-            <li>Shipping and delivery support</li>
-            <li>Easy returns within 7 days</li>
-            <li>Secure payments and checkout</li>
+            <li><Link to="/policies">Shipping and delivery support</Link></li>
+            <li><Link to="/policies">Easy returns within 7 days</Link></li>
+            <li><Link to="/policies">Secure payments and checkout</Link></li>
           </ul>
         </section>
 
@@ -36,7 +36,7 @@ const Footer = () => {
           <ul className="footer-contact">
             <li><FiPhone /> <span>+977-9800000000</span></li>
             <li><FiMail /> <span>support@playgear.com</span></li>
-            <li><FiMapPin /> <span>Kathmandu</span></li>
+            <li><FiMapPin /> <Link to="/contact">Kathmandu</Link></li>
           </ul>
         </section>
       </div>

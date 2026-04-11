@@ -4,7 +4,9 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes'); 
+const orderRoutes = require('./routes/orderRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const path = require('path');
 
 dotenv.config();
 
@@ -32,15 +34,20 @@ mongoose.connect(MONGO_URI)
 // 4. API Routes
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes); 
-// 404 Handler
-app.use((req, res, next) => {
-    console.log(`404 Check: You tried to reach ${req.method} ${req.url}`);
-    res.status(404).json({ message: `Route ${req.url} not found on this server` });
-});
+app.use('/api/orders', orderRoutes);
+
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
+app.use('/api/upload', uploadRoutes);
 
 // Test Route
 app.get('/', (req, res) => {
   res.send('Play Gear API is running...');
+});
+
+// 404 Handler
+app.use((req, res, next) => {
+    console.log(`404 Check: You tried to reach ${req.method} ${req.url}`);
+    res.status(404).json({ message: `Route ${req.url} not found on this server` });
 });
 
 // Global Error Handler
@@ -53,9 +60,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
-
-// UPLOAD ROUTES
-const path = require('path');
-
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
-app.use('/api/upload', uploadRoutes);

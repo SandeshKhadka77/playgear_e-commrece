@@ -11,6 +11,8 @@ import AdminOrders from './pages/AdminOrders';
 import AdminUsers from './pages/AdminUser';
 import AdminAddProductPage from './pages/AdminAddProductPage';
 import LoginPage from './pages/LoginPage';
+import PoliciesPage from './pages/PoliciesPage';
+import ContactPage from './pages/ContactPage';
 import Footer from './components/Footer';
 import './index.css';
 
@@ -37,6 +39,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/policies" element={<PoliciesPage />} />
+          <Route path="/contact" element={<ContactPage />} />
 
         {/* ADMIN ROUTES  */}
         <Route path="/admin" element={

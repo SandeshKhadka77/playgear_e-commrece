@@ -1,0 +1,53 @@
+.static-page-shell {
+  width: min(1000px, 92vw);
+  margin: 30px auto 54px;
+}
+
+.static-page-card {
+  background: #fff;
+  border: 1px solid #deebf9;
+  border-radius: 16px;
+  box-shadow: 0 14px 28px rgba(12, 30, 58, 0.08);
+  padding: 24px;
+}
+
+.static-page-card h1 {
+  font-family: var(--font-heading);
+  color: #102a43;
+  margin-bottom: 8px;
+}
+
+.static-subtitle {
+  color: #607b98;
+  margin-bottom: 18px;
+}
+
+.policy-group {
+  border-top: 1px solid #edf2f8;
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+.policy-group h2 {
+  font-size: 1.06rem;
+  color: #153959;
+  margin-bottom: 6px;
+}
+
+.policy-group p {
+  color: #607b98;
+  line-height: 1.7;
+}
+
+.contact-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.contact-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #446482;
+}

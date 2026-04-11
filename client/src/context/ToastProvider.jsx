@@ -1,11 +1,9 @@
-import React, { createContext, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import '../styles/toast.css';
-
-export const ToastContext = createContext(null);
-
-let nextToastId = 1;
+import { ToastContext } from './ToastContext';
 
 export const ToastProvider = ({ children }) => {
+  const nextToastIdRef = useRef(1);
   const [toasts, setToasts] = useState([]);
 
   const removeToast = useCallback((id) => {
@@ -13,8 +11,8 @@ export const ToastProvider = ({ children }) => {
   }, []);
 
   const showToast = useCallback((message, type = 'info') => {
-    const id = nextToastId;
-    nextToastId += 1;
+    const id = nextToastIdRef.current;
+    nextToastIdRef.current += 1;
 
     setToasts((prev) => [...prev, { id, message, type }]);
     setTimeout(() => removeToast(id), 3000);

@@ -3,26 +3,45 @@ import axios from 'axios';
 import '../styles/admin.css';
 
 const AdminOrders = () => {
+  const [orders, setOrders] = useState([]);
   const [stats, setStats] = useState({ orderCount: 0, totalSales: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchOrderSummary = async () => {
+    const fetchOrders = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/products/admin/stats');
+        const userInfo = JSON.parse(localStorage.getItem('userInfo') || 'null');
+        const token = userInfo?.token;
+
+        if (!token) {
+          setError('Admin token missing. Please login again.');
+          setLoading(false);
+          return;
+        }
+
+        const [{ data: statsData }, { data: orderData }] = await Promise.all([
+          axios.get('http://localhost:5000/api/products/admin/stats'),
+          axios.get('http://localhost:5000/api/orders', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }),
+        ]);
+
         setStats({
-          orderCount: data.orderCount || 0,
-          totalSales: data.totalSales || 0,
+          orderCount: statsData.orderCount || 0,
+          totalSales: statsData.totalSales || 0,
         });
-      } catch {
-        setError('Unable to load order summary.');
+        setOrders(Array.isArray(orderData) ? orderData : []);
+      } catch (requestError) {
+        setError(requestError?.response?.data?.message || 'Unable to load orders.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchOrderSummary();
+    fetchOrders();
   }, []);
 
   if (loading) return <div className="admin-loader">Loading order summary...</div>;
@@ -54,11 +73,27 @@ const AdminOrders = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td colSpan="5" className="orders-empty-cell">
-              Orders model is not integrated yet. Summary cards above are live from admin stats.
-            </td>
+          {orders.map((order) => (
+            <tr key={order._id}>
+              <td>#{String(order._id).slice(-6)}</td>
+              <td>{order.user?.name || order.user?.email || 'Unknown'}</td>
+              <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+              <td>Rs. {Number(order.totalPrice || 0).toLocaleString()}</td>
+              <td>
+                <span className={`badge ${order.status === 'Delivered' ? 'success' : 'warning'}`}>
+                  {order.status}
+                </span>
+              </td>
             </tr>
+          ))}
+
+          {orders.length === 0 && (
+            <tr>
+              <td colSpan="5" className="orders-empty-cell">
+                No orders found yet.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

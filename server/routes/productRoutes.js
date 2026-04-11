@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product'); // This imports your blueprint
+const Order = require('../models/orderModel');
+const User = require('../models/userModel');
 
 // @desc    Fetch all products from MongoDB
 // @route   GET /api/products
@@ -56,12 +58,22 @@ router.post('/', async (req, res) => {
 router.get('/admin/stats', async (req, res) => {
   try {
     const productCount = await Product.countDocuments();
-    // For now, we return 0 for orders/sales until we build those models
+    const orderCount = await Order.countDocuments();
+    const userCount = await User.countDocuments();
+    const salesResult = await Order.aggregate([
+      {
+        $group: {
+          _id: null,
+          totalSales: { $sum: '$totalPrice' },
+        },
+      },
+    ]);
+
     res.json({
       productCount: productCount,
-      orderCount: 0,
-      totalSales: 0,
-      userCount: 1 // Placeholder
+      orderCount,
+      totalSales: salesResult[0]?.totalSales || 0,
+      userCount,
     });
   } catch (error) {
     res.status(500).json({ message: error.message });

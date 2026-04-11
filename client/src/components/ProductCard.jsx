@@ -4,9 +4,11 @@ import { FiShoppingBag } from 'react-icons/fi';
 import { IoStar, IoStarHalf } from 'react-icons/io5';
 import '../styles/ProductCard.css';
 import { useCart } from '../hooks/useCart';
+import { useToast } from '../hooks/useToast';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
+  const { showToast } = useToast();
 
   const rating = Number(product.rating || 4.5);
   const roundedRating = Math.round(rating * 2) / 2;
@@ -52,7 +54,14 @@ const ProductCard = ({ product }) => {
         </div>
         <div className="card-footer">
           <span className="product-price">Rs. {Number(product.price || 0).toLocaleString()}</span>
-          <button className="add-to-cart-btn" type="button" onClick={() => addToCart(product)}>
+          <button
+            className="add-to-cart-btn"
+            type="button"
+            onClick={() => {
+              addToCart(product);
+              showToast(`${product.name} added to cart.`, 'success');
+            }}
+          >
             <FiShoppingBag />
             <span>Add</span>
           </button>

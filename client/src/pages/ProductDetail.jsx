@@ -5,12 +5,14 @@ import axios from 'axios';
 import { FiCheckCircle, FiMinus, FiPlus, FiShoppingBag } from 'react-icons/fi';
 import { products } from '../data/products.js';
 import { useCart } from '../hooks/useCart';
+import { useToast } from '../hooks/useToast';
 import ProductCard from '../components/ProductCard';
 import '../styles/ProductDetail.css';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const { showToast } = useToast();
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [qty, setQty] = useState(1);
@@ -74,13 +76,27 @@ const ProductDetail = () => {
               <button type="button" onClick={increaseQty} aria-label="Increase quantity"><FiPlus /></button>
             </div>
 
-            <button className="add-to-cart-btn" type="button" onClick={() => addToCart(product, qty)}>
+            <button
+              className="add-to-cart-btn"
+              type="button"
+              onClick={() => {
+                addToCart(product, qty);
+                showToast(`${qty} item(s) added to cart.`, 'success');
+              }}
+            >
               <FiShoppingBag />
               <span>Add {qty} to Cart</span>
             </button>
           </div>
 
-          <button className="buy-now-btn" type="button" onClick={() => addToCart(product, 1)}>
+          <button
+            className="buy-now-btn"
+            type="button"
+            onClick={() => {
+              addToCart(product, 1);
+              showToast('Item added. Continue checkout from cart.', 'info');
+            }}
+          >
             <FiShoppingBag />
             <span>Buy Now</span>
           </button>
