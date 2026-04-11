@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiBox, FiClipboard, FiHome, FiUsers } from 'react-icons/fi';
+import { FiBox, FiClipboard, FiHome, FiPlusSquare, FiUsers } from 'react-icons/fi';
 import '../../styles/admin.css';
 
 const AdminLayout = ({ children }) => {
@@ -9,6 +9,7 @@ const AdminLayout = ({ children }) => {
   const navItems = [
     { name: 'Dashboard', path: '/admin', icon: <FiHome /> },
     { name: 'Products', path: '/admin/products', icon: <FiBox /> },
+    { name: 'Add Product', path: '/admin/addproduct', icon: <FiPlusSquare /> },
     { name: 'Orders', path: '/admin/orders', icon: <FiClipboard /> },
     { name: 'Users', path: '/admin/users', icon: <FiUsers /> },
   ];

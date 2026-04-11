@@ -14,6 +14,60 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @desc    Create a product
+// @route   POST /api/products
+router.post('/', async (req, res) => {
+  try {
+    const {
+      name,
+      description,
+      price,
+      category,
+      image,
+      countInStock,
+      rating,
+    } = req.body;
+
+    if (!name || !description || !price || !category || !image) {
+      return res.status(400).json({
+        message: 'name, description, price, category and image are required',
+      });
+    }
+
+    const product = await Product.create({
+      name: String(name).trim(),
+      description: String(description).trim(),
+      price: Number(price),
+      category: String(category).trim(),
+      image: String(image).trim(),
+      countInStock: Number(countInStock ?? 0),
+      rating: Number(rating ?? 0),
+    });
+
+    return res.status(201).json(product);
+  } catch (error) {
+    return res.status(500).json({ message: 'Server Error: Could not create product' });
+  }
+});
+
+// admin stats route
+// @desc    Get product, order, sales, and user stats for admin dashboard
+// @route   GET /api/products/admin/stats
+router.get('/admin/stats', async (req, res) => {
+  try {
+    const productCount = await Product.countDocuments();
+    // For now, we return 0 for orders/sales until we build those models
+    res.json({
+      productCount: productCount,
+      orderCount: 0,
+      totalSales: 0,
+      userCount: 1 // Placeholder
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // @desc    Fetch a single product by ID (Useful for Product Details page)
 // @route   GET /api/products/:id
 router.get('/:id', async (req, res) => {
@@ -41,25 +95,6 @@ router.delete('/:id', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: 'Server Error' });
-  }
-});
-
-// admin stats route
-// @desc    Get product, order, sales, and user stats for admin dashboard
-// @route   GET /api/products/admin/stats
-
-router.get('/admin/stats', async (req, res) => {
-  try {
-    const productCount = await Product.countDocuments();
-    // For now, we return 0 for orders/sales until we build those models
-    res.json({
-      productCount: productCount,
-      orderCount: 0,
-      totalSales: 0,
-      userCount: 1 // Placeholder
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
   }
 });
 module.exports = router;

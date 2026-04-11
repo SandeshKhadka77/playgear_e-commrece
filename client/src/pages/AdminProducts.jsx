@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import '../styles/admin.css';
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newProduct, setNewProduct] = useState({
-    name: '', price: '', category: '', description: '', image: '', countInStock: 10
-  });
 
   // Fetch logic contained entirely inside useEffect
   useEffect(() => {
@@ -24,20 +21,6 @@ const AdminProducts = () => {
     };
     getInventory();
   }, []);
-
-  const handleAddProduct = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.post('http://localhost:5000/api/products', newProduct);
-      // Instead of calling a fetch function, we update the state directly
-      setProducts((prev) => [...prev, data]); 
-      setShowAddForm(false);
-      setNewProduct({ name: '', price: '', category: '', description: '', image: '', countInStock: 10 });
-      alert("New Gear Added!");
-    } catch (err) {
-      console.error("Add failed:", err.message);
-    }
-  };
 
   const deleteHandler = async (id) => {
     if (window.confirm('Remove this item?')) {
@@ -56,32 +39,8 @@ const AdminProducts = () => {
     <div className="admin-products-page">
       <div className="admin-header">
         <h1>Product Management</h1>
-        <button className="btn-primary" onClick={() => setShowAddForm(!showAddForm)}>
-          {showAddForm ? 'Close Form' : '+ Add New Gear'}
-        </button>
+        <Link className="btn-primary" to="/admin/addproduct">+ Add New Gear</Link>
       </div>
-
-      {showAddForm && (
-        <form className="add-product-form" onSubmit={handleAddProduct}>
-          <div className="input-group">
-            <input 
-              type="text" 
-              placeholder="Name" 
-              required 
-              value={newProduct.name}
-              onChange={(e) => setNewProduct({...newProduct, name: e.target.value})} 
-            />
-            <input 
-              type="number" 
-              placeholder="Price" 
-              required 
-              value={newProduct.price}
-              onChange={(e) => setNewProduct({...newProduct, price: e.target.value})} 
-            />
-          </div>
-          <button type="submit" className="btn-save">Save to MongoDB</button>
-        </form>
-      )}
 
       <table className="admin-table">
         <thead>
