@@ -3,7 +3,7 @@ node_modules/
 client/node_modules/
 server/node_modules/
 
-# Environment variables (Crucial for security)
+# Environment variables 
 .env
 server/.env
 .env.local
@@ -16,9 +16,9 @@ build/
 
 # Runtime uploads
 uploads/
-server/uploads/
+server/uploads
 
-# Operating System files
+
 .DS_Store
 Thumbs.db
 
@@ -31,5 +31,3 @@ yarn-error.log*
 .vscode/
 .idea/
 
-# Temporary files
-desktop.ini
