@@ -36,14 +36,30 @@ router.post('/', async (req, res) => {
       });
     }
 
+    const normalizedPrice = Number(price);
+    const normalizedStock = Number(countInStock ?? 0);
+    const normalizedRating = Number(rating ?? 0);
+
+    if (Number.isNaN(normalizedPrice) || normalizedPrice < 0) {
+      return res.status(400).json({ message: 'price must be a non-negative number' });
+    }
+
+    if (Number.isNaN(normalizedStock) || normalizedStock < 0) {
+      return res.status(400).json({ message: 'countInStock must be a non-negative number' });
+    }
+
+    if (Number.isNaN(normalizedRating) || normalizedRating < 0 || normalizedRating > 5) {
+      return res.status(400).json({ message: 'rating must be between 0 and 5' });
+    }
+
     const product = await Product.create({
       name: String(name).trim(),
       description: String(description).trim(),
-      price: Number(price),
+      price: normalizedPrice,
       category: String(category).trim(),
       image: String(image).trim(),
-      countInStock: Number(countInStock ?? 0),
-      rating: Number(rating ?? 0),
+      countInStock: normalizedStock,
+      rating: normalizedRating,
     });
 
     return res.status(201).json(product);
