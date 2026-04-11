@@ -138,7 +138,9 @@
 .q-btn:hover { opacity: 0.9; transform: translateX(5px); }
 
 .admin-products-page,
-.admin-add-product-page {
+.admin-add-product-page,
+.admin-users-page,
+.admin-orders-page {
   background: #fff;
   border-radius: 14px;
   border: 1px solid #e0eaf5;
@@ -266,6 +268,62 @@
   color: #1e7a46;
 }
 
+.admin-empty {
+  margin-top: 12px;
+  color: #5f7893;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.badge.success {
+  background: #eafff0;
+  color: #1f8a4b;
+}
+
+.badge.warning {
+  background: #fff7e9;
+  color: #b36416;
+}
+
+.order-summary-grid {
+  margin: 12px 0 16px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.order-summary-card {
+  border: 1px solid #e0eaf5;
+  border-radius: 12px;
+  padding: 14px;
+  background: #f8fbff;
+}
+
+.order-summary-card h3 {
+  color: #46617f;
+  font-size: 0.9rem;
+}
+
+.order-summary-card p {
+  color: #102a43;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+.orders-empty-cell {
+  color: #6c84a0;
+  text-align: center;
+  padding: 22px !important;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -305,6 +363,10 @@
   .admin-table {
     display: block;
     overflow-x: auto;
+  }
+
+  .order-summary-grid {
+    grid-template-columns: 1fr;
   }
 
   .dashboard-lower { grid-template-columns: 1fr; }

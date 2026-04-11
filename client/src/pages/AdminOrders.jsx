@@ -1,15 +1,48 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import '../styles/admin.css';
 
 const AdminOrders = () => {
-  // Mock data for UI testing
-  const mockOrders = [
-    { _id: 'ORD101', user: 'Sandesh K.', date: '2026-01-28', total: 4500, status: 'Pending' },
-    { _id: 'ORD102', user: 'Anil M.', date: '2026-01-27', total: 1200, status: 'Shipped' },
-  ];
+  const [stats, setStats] = useState({ orderCount: 0, totalSales: 0 });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchOrderSummary = async () => {
+      try {
+        const { data } = await axios.get('http://localhost:5000/api/products/admin/stats');
+        setStats({
+          orderCount: data.orderCount || 0,
+          totalSales: data.totalSales || 0,
+        });
+      } catch {
+        setError('Unable to load order summary.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrderSummary();
+  }, []);
+
+  if (loading) return <div className="admin-loader">Loading order summary...</div>;
 
   return (
     <div className="admin-orders-page">
       <h1>Order Management</h1>
+      {error && <p className="admin-alert error">{error}</p>}
+
+      <div className="order-summary-grid">
+        <div className="order-summary-card">
+          <h3>Total Orders</h3>
+          <p>{stats.orderCount}</p>
+        </div>
+        <div className="order-summary-card">
+          <h3>Total Sales</h3>
+          <p>Rs. {Number(stats.totalSales).toLocaleString()}</p>
+        </div>
+      </div>
+
       <table className="admin-table">
         <thead>
           <tr>
@@ -21,19 +54,11 @@ const AdminOrders = () => {
           </tr>
         </thead>
         <tbody>
-          {mockOrders.map(order => (
-            <tr key={order._id}>
-              <td className="bold-text">#{order._id}</td>
-              <td>{order.user}</td>
-              <td>{order.date}</td>
-              <td>Rs. {order.total}</td>
-              <td>
-                <span className={`badge ${order.status === 'Shipped' ? 'success' : 'warning'}`}>
-                  {order.status}
-                </span>
-              </td>
+          <tr>
+            <td colSpan="5" className="orders-empty-cell">
+              Orders model is not integrated yet. Summary cards above are live from admin stats.
+            </td>
             </tr>
-          ))}
         </tbody>
       </table>
     </div>

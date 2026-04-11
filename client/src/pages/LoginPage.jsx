@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FiLock, FiMail, FiUser } from 'react-icons/fi';
 import '../styles/auth.css';
+import { useToast } from '../hooks/useToast';
 
 const EMPTY_FORM = {
   name: '',
@@ -12,6 +13,7 @@ const EMPTY_FORM = {
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [mode, setMode] = useState('login');
   const [form, setForm] = useState(EMPTY_FORM);
   const [loading, setLoading] = useState(false);
@@ -44,10 +46,12 @@ const LoginPage = () => {
 
       const { data } = await axios.post(`http://localhost:5000${endpoint}`, payload);
       localStorage.setItem('userInfo', JSON.stringify(data));
+      showToast(mode === 'login' ? 'Logged in successfully.' : 'Account created successfully.', 'success');
       navigate(data?.isAdmin ? '/admin' : '/products');
     } catch (requestError) {
       const message = requestError?.response?.data?.message || 'Authentication failed. Please try again.';
       setError(message);
+      showToast(message, 'error');
     } finally {
       setLoading(false);
     }

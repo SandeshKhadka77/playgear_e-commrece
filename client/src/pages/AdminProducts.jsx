@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import '../styles/admin.css';
+import { useToast } from '../hooks/useToast';
 
 const AdminProducts = () => {
+  const { showToast } = useToast();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,8 +29,10 @@ const AdminProducts = () => {
       try {
         await axios.delete(`http://localhost:5000/api/products/${id}`);
         setProducts((prev) => prev.filter((p) => p._id !== id));
+        showToast('Product removed.', 'success');
       } catch (err) {
         console.error("Delete failed:", err.message);
+        showToast('Could not remove product.', 'error');
       }
     }
   };

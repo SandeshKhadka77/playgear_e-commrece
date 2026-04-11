@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { FiCheckCircle, FiSave } from 'react-icons/fi';
 import '../styles/admin.css';
+import { useToast } from '../hooks/useToast';
 
 const AdminAddProductPage = () => {
+	const { showToast } = useToast();
 	const [form, setForm] = useState({
 		name: '',
 		category: '',
@@ -27,6 +29,7 @@ const AdminAddProductPage = () => {
 
 		if (!form.name || !form.category || !form.description || !form.image || !form.price) {
 			setError('Please fill all required fields.');
+			showToast('Please fill all required fields.', 'error');
 			return;
 		}
 
@@ -39,6 +42,7 @@ const AdminAddProductPage = () => {
 			});
 
 			setMessage('Product added successfully.');
+			showToast('Product added successfully.', 'success');
 			setForm({
 				name: '',
 				category: '',
@@ -50,6 +54,7 @@ const AdminAddProductPage = () => {
 		} catch (requestError) {
 			const serverMessage = requestError?.response?.data?.message || 'Could not save product.';
 			setError(serverMessage);
+			showToast(serverMessage, 'error');
 		} finally {
 			setSaving(false);
 		}

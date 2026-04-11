@@ -11,6 +11,7 @@ import AdminOrders from './pages/AdminOrders';
 import AdminUsers from './pages/AdminUser';
 import AdminAddProductPage from './pages/AdminAddProductPage';
 import LoginPage from './pages/LoginPage';
+import Footer from './components/Footer';
 import './index.css';
 
 
@@ -69,6 +70,8 @@ function App() {
           } />
         </Routes>
       </main>
+
+      <Footer />
     </Router>
   );
 }
