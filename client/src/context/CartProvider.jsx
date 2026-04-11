@@ -33,9 +33,10 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (product) => {
+  const addToCart = (product, qty = 1) => {
     const key = getProductKey(product);
     if (!key) return;
+    const amount = Math.max(1, Number(qty) || 1);
 
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => String(item._id ?? item.id) === key);
@@ -43,12 +44,12 @@ export const CartProvider = ({ children }) => {
       if (existingItem) {
         return prevCart.map((item) => (
           String(item._id ?? item.id) === key
-            ? { ...item, qty: (item.qty || 1) + 1 }
+            ? { ...item, qty: (item.qty || 1) + amount }
             : item
         ));
       }
 
-      return [...prevCart, normalizeItem(product, 1)];
+      return [...prevCart, normalizeItem(product, amount)];
     });
   };
 

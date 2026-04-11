@@ -10,6 +10,7 @@ import AdminLayout from './components/admin/AdminLayout';
 import AdminOrders from './pages/AdminOrders';
 import AdminUsers from './pages/AdminUser';
 import AdminAddProductPage from './pages/AdminAddProductPage';
+import LoginPage from './pages/LoginPage';
 import './index.css';
 
 
@@ -32,21 +33,21 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/login" element={<div className="placeholder-page"><h1>Login / Register</h1></div>} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
 
         {/* ADMIN ROUTES  */}
         <Route path="/admin" element={
-          <AdminLayout>
-            <AdminDashboard />
-          </AdminLayout>
+          <AdminRoute>
+            <AdminLayout><AdminDashboard /></AdminLayout>
+          </AdminRoute>
         } />
         
         <Route path="/admin/products" element={
-          <AdminLayout>
-            <AdminProducts />
-          </AdminLayout>
+          <AdminRoute>
+            <AdminLayout><AdminProducts /></AdminLayout>
+          </AdminRoute>
         } />
 
         <Route path="/admin/orders" element={

@@ -1,39 +1,46 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { FiBox, FiClipboard, FiHome, FiUsers } from 'react-icons/fi';
+import '../../styles/admin.css';
 
-const AdminSidebar = () => {
+const AdminLayout = ({ children }) => {
   const location = useLocation();
   
   const navItems = [
-    { name: '📊 Dashboard', path: '/admin' },
-    { name: '📦 Products', path: '/admin/productlist' },
-    { name: '📜 Orders', path: '/admin/orderlist' },
-    { name: '👥 Users', path: '/admin/userlist' },
+    { name: 'Dashboard', path: '/admin', icon: <FiHome /> },
+    { name: 'Products', path: '/admin/products', icon: <FiBox /> },
+    { name: 'Orders', path: '/admin/orders', icon: <FiClipboard /> },
+    { name: 'Users', path: '/admin/users', icon: <FiUsers /> },
   ];
 
   return (
-    <div className="w-64 bg-slate-900 min-h-screen text-white p-4 shadow-xl">
-      <div className="mb-10 text-center">
-        <h1 className="text-xl font-bold text-blue-400">PlayGear Nepal</h1>
-        <p className="text-xs text-gray-400 uppercase tracking-widest">Admin Panel</p>
-      </div>
-      <nav className="space-y-2">
-        {navItems.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
-            className={`block p-3 rounded-lg transition-all ${
-              location.pathname === item.path 
-              ? 'bg-blue-600 text-white shadow-lg' 
-              : 'hover:bg-slate-800 text-gray-300'
-            }`}
-          >
-            {item.name}
-          </Link>
-        ))}
-      </nav>
+    <div className="admin-layout">
+      <aside className="admin-sidebar">
+        <div className="admin-brand">
+          <h1>PlayGear Nepal</h1>
+          <p>Admin Panel</p>
+        </div>
+        <nav className="admin-nav">
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`admin-nav-item ${
+                location.pathname === item.path 
+                ? 'active' 
+                : ''
+              }`}
+            >
+              {item.icon}
+              <span>{item.name}</span>
+            </Link>
+          ))}
+        </nav>
+      </aside>
+
+      <section className="admin-main">{children}</section>
     </div>
   );
 };
 
-export default AdminSidebar;
+export default AdminLayout;

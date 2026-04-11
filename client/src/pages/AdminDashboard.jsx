@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../styles/Admin.css';
+import { FiActivity, FiBox, FiCheckCircle, FiDollarSign, FiShoppingCart, FiUsers } from 'react-icons/fi';
+import '../styles/admin.css';
 
 const AdminDashboard = () => {
   // 1. State to hold our real data from DB
@@ -31,10 +32,10 @@ const AdminDashboard = () => {
 
   // 3. Map the DB data to the UI Cards
   const summaryCards = [
-    { label: 'Total Revenue', value: `Rs. ${stats.totalSales.toLocaleString()}`, icon: '💰', color: '#28a745' },
-    { label: 'Total Orders', value: stats.orderCount, icon: '🛒', color: '#ff9900' },
-    { label: 'Active Products', value: stats.productCount, icon: '📦', color: '#17a2b8' },
-    { label: 'Total Users', value: stats.userCount, icon: '👥', color: '#6610f2' },
+    { label: 'Total Revenue', value: `Rs. ${stats.totalSales.toLocaleString()}`, icon: <FiDollarSign />, color: '#28a745' },
+    { label: 'Total Orders', value: stats.orderCount, icon: <FiShoppingCart />, color: '#ff9900' },
+    { label: 'Active Products', value: stats.productCount, icon: <FiBox />, color: '#17a2b8' },
+    { label: 'Total Users', value: stats.userCount, icon: <FiUsers />, color: '#6610f2' },
   ];
 
   if (loading) return <div className="admin-loader">Syncing PlayGear Dashboard...</div>;
@@ -46,7 +47,6 @@ const AdminDashboard = () => {
         <p>Real-time inventory and sales tracking from MongoDB.</p>
       </header>
 
-      {/* STATS GRID */}
       <div className="stats-grid">
         {summaryCards.map((stat, index) => (
           <div key={index} className="stat-card">
@@ -61,18 +61,17 @@ const AdminDashboard = () => {
         ))}
       </div>
 
-      {/* RECENT ACTIVITY SECTION */}
       <div className="dashboard-lower">
         <div className="activity-panel">
           <h3>Recent Activity</h3>
           <ul className="activity-list">
             <li>
-              <span className="act-icon">🆕</span>
+              <span className="act-icon"><FiActivity /></span>
               <p>Database connected: <strong>{stats.productCount}</strong> products synced.</p>
               <span className="act-time">Just now</span>
             </li>
             <li>
-              <span className="act-icon">✅</span>
+              <span className="act-icon"><FiCheckCircle /></span>
               <p>System health: <strong>Online</strong></p>
               <span className="act-time">Stable</span>
             </li>

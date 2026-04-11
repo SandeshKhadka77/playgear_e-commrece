@@ -88,6 +88,18 @@
   gap: 8px;
 }
 
+.logout-btn {
+  border: none;
+  background: transparent;
+  color: #ecf3fa;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
 .cart-btn {
   display: inline-flex;
   align-items: center;
