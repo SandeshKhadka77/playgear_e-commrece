@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 
 // Test Route
 app.get('/', (req, res) => {
-  res.send('PlayGear Nepal API is running...');
+  res.send('Play Gear API is running...');
 });
 
 // Global Error Handler

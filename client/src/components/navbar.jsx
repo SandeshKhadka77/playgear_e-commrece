@@ -23,7 +23,7 @@ const Navbar = () => {
     <nav className="navbar" aria-label="Main navigation">
       <div className="nav-container">
         <Link to="/" className="nav-logo" onClick={closeMenu}>
-          PLAYGEAR<span>NEPAL</span>
+          PLAY<span>GEAR</span>
         </Link>
 
         <div className="nav-search">

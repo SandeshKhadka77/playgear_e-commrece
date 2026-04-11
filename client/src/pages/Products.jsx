@@ -70,7 +70,7 @@ const Products = () => {
     return filtered;
   }, [products, searchTerm, selectedCategory, maxPrice, sortBy]);
 
-  if (loading) return <div className="loader">Loading PlayGear Store...</div>;
+  if (loading) return <div className="loader">Loading Play Gear Store...</div>;
   if (error) return <div className="loader error">{error}</div>;
 
   return (

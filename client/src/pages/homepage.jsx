@@ -1,31 +1,58 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard'; 
-import { FiArrowRight, FiCpu, FiTarget, FiTrendingUp } from 'react-icons/fi';
+import { FiArrowRight, FiCpu, FiShield, FiTarget, FiTrendingUp, FiTruck } from 'react-icons/fi';
 import '../styles/homepage.css';
+import { products as fallbackProducts } from '../data/products';
 
 const HomePage = () => {
-  const products = [
-    { _id: 'p1', name: 'Logitech G Pro Wireless', price: 15500, category: 'Gaming', image: 'https://placehold.co/300x300?text=Gaming+Mouse', rating: 5 },
-    { _id: 'p2', name: 'Adjustable Dumbbell Set (20kg)', price: 12000, category: 'Gym', image: 'https://placehold.co/300x300?text=Dumbbells', rating: 4.5 },
-    { _id: 'p3', name: 'English Willow Cricket Bat', price: 25000, category: 'Sports', image: 'https://placehold.co/300x300?text=Cricket+Bat', rating: 5 },
-    { _id: 'p4', name: 'Razer Kraken V3 Headset', price: 9500, category: 'Gaming', image: 'https://placehold.co/300x300?text=Headset', rating: 4 },
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeaturedProducts = async () => {
+      try {
+        const { data } = await axios.get('http://localhost:5000/api/products');
+        setProducts(Array.isArray(data) ? data.slice(0, 8) : []);
+      } catch {
+        setProducts(fallbackProducts.map((item) => ({ ...item, _id: item.id })));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeaturedProducts();
+  }, []);
+
+  const featuredItems = useMemo(() => products.slice(0, 4), [products]);
 
   return (
     <div className="home-page">
       <section className="hero-section">
         <div className="hero-overlay" />
         <div className="hero-content page-wrap">
-          <p className="hero-tag">Nepal's next-level sports and gaming store</p>
+          <p className="hero-tag">Your next-level sports and gaming store</p>
           <h1>Gear Up For Real Performance</h1>
           <p>
             Discover premium gaming setups, elite fitness tools, and sports essentials built for daily grind and match day.
           </p>
-          <button className="hero-cta" type="button">
-            Shop New Arrivals
-            <FiArrowRight />
-          </button>
+          <div className="hero-cta-row">
+            <Link className="hero-cta" to="/products">
+              Shop New Arrivals
+              <FiArrowRight />
+            </Link>
+            <Link className="hero-cta ghost" to="/products">
+              Explore Collections
+            </Link>
+          </div>
         </div>
+      </section>
+
+      <section className="trust-strip page-wrap">
+        <div><FiTruck /><span>Fast Dispatch</span></div>
+        <div><FiShield /><span>Quality Checked</span></div>
+        <div><FiTrendingUp /><span>Performance First</span></div>
       </section>
 
       <section className="quick-links page-wrap">
@@ -52,10 +79,19 @@ const HomePage = () => {
           <p>Selected products trusted by competitors and creators.</p>
         </div>
         <div className="featured-grid">
-          {products.map((product) => (
-            <ProductCard key={product._id} product={product} />
+          {loading && <p className="home-loading">Loading featured products...</p>}
+          {!loading && featuredItems.map((product) => (
+            <ProductCard key={product._id || product.id} product={product} />
           ))}
         </div>
+      </section>
+
+      <section className="home-cta-band page-wrap">
+        <div>
+          <h3>Need a complete setup?</h3>
+          <p>Build your gaming, fitness, or sports kit in one place with curated bundles.</p>
+        </div>
+        <Link className="home-cta-btn" to="/products">Start Building</Link>
       </section>
     </div>
   );

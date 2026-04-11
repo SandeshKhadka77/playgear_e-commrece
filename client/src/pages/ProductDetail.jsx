@@ -85,7 +85,7 @@ const ProductDetail = () => {
             <span>Buy Now</span>
           </button>
           <ul className="detail-benefits">
-            <li><FiCheckCircle /> Fast delivery inside Nepal</li>
+            <li><FiCheckCircle /> Fast delivery across the country</li>
             <li><FiCheckCircle /> Quality-checked before shipping</li>
           </ul>
         </div>

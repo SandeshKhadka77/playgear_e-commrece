@@ -58,7 +58,7 @@ const LoginPage = () => {
       <div className="auth-card">
         <div className="auth-head">
           <h1>{title}</h1>
-          <p>Access your PlayGear account to shop faster and manage orders.</p>
+          <p>Access your Play Gear account to shop faster and manage orders.</p>
         </div>
 
         <div className="auth-tabs" role="tablist" aria-label="Auth modes">

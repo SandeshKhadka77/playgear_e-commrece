@@ -38,7 +38,7 @@ const AdminDashboard = () => {
     { label: 'Total Users', value: stats.userCount, icon: <FiUsers />, color: '#6610f2' },
   ];
 
-  if (loading) return <div className="admin-loader">Syncing PlayGear Dashboard...</div>;
+  if (loading) return <div className="admin-loader">Syncing Play Gear Dashboard...</div>;
 
   return (
     <div className="admin-dashboard">

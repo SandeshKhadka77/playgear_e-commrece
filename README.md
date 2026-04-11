@@ -1,6 +1,6 @@
-# PlayGear Nepal E-Commerce Site 
+# Play Gear E-Commerce Site 
 
-PlayGear Nepal is a MERN-based e-commerce platform focused on **sports, gym, fitness, and gaming products**.
+Play Gear is a MERN-based e-commerce platform focused on **sports, gym, fitness, and gaming products**.
 ---
 
 ## Tech Stack

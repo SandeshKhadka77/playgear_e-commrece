@@ -18,7 +18,7 @@ const AdminLayout = ({ children }) => {
     <div className="admin-layout">
       <aside className="admin-sidebar">
         <div className="admin-brand">
-          <h1>PlayGear Nepal</h1>
+          <h1>Play Gear</h1>
           <p>Admin Panel</p>
         </div>
         <nav className="admin-nav">
