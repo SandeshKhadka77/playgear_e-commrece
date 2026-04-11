@@ -2,6 +2,17 @@ import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import '../styles/staticPages.css';
 
+const getStatusStep = (status) => {
+  const steps = {
+    Pending: 1,
+    Confirmed: 2,
+    Shipped: 3,
+    Delivered: 4,
+  };
+
+  return steps[status] || 1;
+};
+
 const MyOrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -76,9 +87,19 @@ const MyOrdersPage = () => {
                     <td>{order.orderItems?.length || 0}</td>
                     <td>Rs. {Number(order.totalPrice || 0).toLocaleString()}</td>
                     <td>
-                      <span className={`badge ${order.status === 'Delivered' ? 'success' : 'warning'}`}>
-                        {order.status}
-                      </span>
+                      <div className="status-cell">
+                        <span className={`badge ${order.status === 'Delivered' ? 'success' : 'warning'}`}>
+                          {order.status}
+                        </span>
+                        <div className="timeline-dots" aria-hidden="true">
+                          {[1, 2, 3, 4].map((step) => (
+                            <span
+                              key={step}
+                              className={`dot ${getStatusStep(order.status) >= step ? 'active' : ''}`}
+                            />
+                          ))}
+                        </div>
+                      </div>
                     </td>
                   </tr>
                 ))}

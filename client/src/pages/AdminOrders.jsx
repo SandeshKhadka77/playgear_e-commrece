@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import '../styles/admin.css';
 import { useToast } from '../hooks/useToast';
+
+const PAGE_SIZE = 8;
 
 const AdminOrders = () => {
   const { showToast } = useToast();
@@ -11,6 +13,8 @@ const AdminOrders = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
+  const [page, setPage] = useState(1);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -85,6 +89,23 @@ const AdminOrders = () => {
     return matchesSearch && matchesStatus;
   });
 
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm, statusFilter]);
+
+  const totalPages = useMemo(
+    () => Math.max(1, Math.ceil(filteredOrders.length / PAGE_SIZE)),
+    [filteredOrders.length]
+  );
+
+  const paginatedOrders = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return filteredOrders.slice(start, start + PAGE_SIZE);
+  }, [filteredOrders, page]);
+
+  const goPrevious = () => setPage((prev) => Math.max(1, prev - 1));
+  const goNext = () => setPage((prev) => Math.min(totalPages, prev + 1));
+
   if (loading) return <div className="admin-loader">Loading order summary...</div>;
 
   return (
@@ -132,7 +153,7 @@ const AdminOrders = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredOrders.map((order) => (
+          {paginatedOrders.map((order) => (
             <tr key={order._id}>
               <td>#{String(order._id).slice(-6)}</td>
               <td>{order.user?.name || order.user?.email || 'Unknown'}</td>
@@ -144,21 +165,26 @@ const AdminOrders = () => {
                 </span>
               </td>
               <td>
-                <select
-                  className="status-select"
-                  value={order.status}
-                  onChange={(event) => updateStatus(order._id, event.target.value)}
-                >
-                  <option value="Pending">Pending</option>
-                  <option value="Confirmed">Confirmed</option>
-                  <option value="Shipped">Shipped</option>
-                  <option value="Delivered">Delivered</option>
-                </select>
+                <div className="order-actions">
+                  <select
+                    className="status-select"
+                    value={order.status}
+                    onChange={(event) => updateStatus(order._id, event.target.value)}
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Shipped">Shipped</option>
+                    <option value="Delivered">Delivered</option>
+                  </select>
+                  <button type="button" className="view-order-btn" onClick={() => setSelectedOrder(order)}>
+                    View
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
 
-          {filteredOrders.length === 0 && (
+          {paginatedOrders.length === 0 && (
             <tr>
               <td colSpan="6" className="orders-empty-cell">
                 No orders found yet.
@@ -167,6 +193,39 @@ const AdminOrders = () => {
           )}
         </tbody>
       </table>
+
+      {filteredOrders.length > 0 && (
+        <div className="pagination-row">
+          <button type="button" onClick={goPrevious} disabled={page === 1}>Previous</button>
+          <span>Page {page} of {totalPages}</span>
+          <button type="button" onClick={goNext} disabled={page === totalPages}>Next</button>
+        </div>
+      )}
+
+      {selectedOrder && (
+        <div className="admin-modal-overlay" role="presentation" onClick={() => setSelectedOrder(null)}>
+          <div className="admin-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
+            <div className="admin-modal-head">
+              <h3>Order #{String(selectedOrder._id).slice(-6)}</h3>
+              <button type="button" onClick={() => setSelectedOrder(null)}>×</button>
+            </div>
+
+            <p><strong>Customer:</strong> {selectedOrder.user?.name || selectedOrder.user?.email || 'Unknown'}</p>
+            <p><strong>Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
+            <p><strong>Total:</strong> Rs. {Number(selectedOrder.totalPrice || 0).toLocaleString()}</p>
+
+            <h4>Items</h4>
+            <ul className="order-item-list">
+              {(selectedOrder.orderItems || []).map((item, index) => (
+                <li key={`${item.product || item.name}-${index}`}>
+                  <span>{item.name}</span>
+                  <span>{item.qty} × Rs. {Number(item.price || 0).toLocaleString()}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

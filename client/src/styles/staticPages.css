@@ -59,3 +59,25 @@
   flex-wrap: wrap;
   color: #4e6883;
 }
+
+.status-cell {
+  display: grid;
+  gap: 6px;
+}
+
+.timeline-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.timeline-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d8e5f2;
+}
+
+.timeline-dots .dot.active {
+  background: #28a55f;
+}

@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import '../styles/admin.css';
+
+const PAGE_SIZE = 10;
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
@@ -8,6 +10,7 @@ const AdminUsers = () => {
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('All');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -48,6 +51,23 @@ const AdminUsers = () => {
     return matchesSearch && matchesRole;
   });
 
+  useEffect(() => {
+    setPage(1);
+  }, [searchTerm, roleFilter]);
+
+  const totalPages = useMemo(
+    () => Math.max(1, Math.ceil(filteredUsers.length / PAGE_SIZE)),
+    [filteredUsers.length]
+  );
+
+  const paginatedUsers = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return filteredUsers.slice(start, start + PAGE_SIZE);
+  }, [filteredUsers, page]);
+
+  const goPrevious = () => setPage((prev) => Math.max(1, prev - 1));
+  const goNext = () => setPage((prev) => Math.min(totalPages, prev + 1));
+
   if (loading) return <div className="admin-loader">Loading users...</div>;
 
   return (
@@ -80,7 +100,7 @@ const AdminUsers = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map(user => (
+          {paginatedUsers.map(user => (
             <tr key={user._id}>
               <td>{user._id}</td>
               <td>{user.name}</td>
@@ -90,6 +110,14 @@ const AdminUsers = () => {
           ))}
         </tbody>
       </table>
+
+      {filteredUsers.length > 0 && (
+        <div className="pagination-row">
+          <button type="button" onClick={goPrevious} disabled={page === 1}>Previous</button>
+          <span>Page {page} of {totalPages}</span>
+          <button type="button" onClick={goNext} disabled={page === totalPages}>Next</button>
+        </div>
+      )}
 
       {filteredUsers.length === 0 && !error && <p className="admin-empty">No users found.</p>}
     </div>
