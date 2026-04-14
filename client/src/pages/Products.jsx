@@ -2,6 +2,8 @@
 import api from '../lib/apiClient';
 import { FiSearch, FiSliders } from 'react-icons/fi';
 import ProductCard from '../components/ProductCard';
+import ProductCardSkeleton from '../components/ProductCardSkeleton';
+import StateBlock from '../components/StateBlock';
 import '../styles/ProductsPage.css'; 
 import { products as fallbackProducts } from '../data/products';
 
@@ -72,8 +74,6 @@ const Products = () => {
     return filtered;
   }, [products, searchTerm, selectedCategory, maxPrice, sortBy]);
 
-  if (loading) return <div className="loader">Loading Play Gear Store...</div>;
-
   return (
     <div className="shop-container">
       <div className="shop-head">
@@ -136,13 +136,20 @@ const Products = () => {
       </section>
 
       <div className="product-grid">
-        {filteredProducts.map((product) => (
+        {loading && Array.from({ length: 8 }).map((_, index) => (
+          <ProductCardSkeleton key={`products-skeleton-${index}`} />
+        ))}
+
+        {!loading && filteredProducts.map((product) => (
           <ProductCard key={product._id || product.id} product={product} />
         ))}
       </div>
 
-      {filteredProducts.length === 0 && (
-        <div className="empty-results">No products matched your filters.</div>
+      {!loading && filteredProducts.length === 0 && (
+        <StateBlock
+          title="No matching products"
+          message="Try a different category, price range, or search keyword."
+        />
       )}
     </div>
   );

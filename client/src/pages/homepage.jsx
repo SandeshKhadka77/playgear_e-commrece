@@ -2,6 +2,8 @@
 import api from '../lib/apiClient';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
+import ProductCardSkeleton from '../components/ProductCardSkeleton';
+import StateBlock from '../components/StateBlock';
 import { FiArrowRight, FiCpu, FiShield, FiTarget, FiTrendingUp, FiTruck } from 'react-icons/fi';
 import '../styles/homepage.css';
 import { products as fallbackProducts } from '../data/products';
@@ -100,11 +102,22 @@ const HomePage = () => {
           <p>Selected products trusted by competitors and creators.</p>
         </div>
         <div className="featured-grid">
-          {loading && <p className="home-loading">Loading featured products...</p>}
+          {loading && Array.from({ length: 4 }).map((_, index) => (
+            <ProductCardSkeleton key={`home-skeleton-${index}`} />
+          ))}
           {!loading && featuredItems.map((product) => (
             <ProductCard key={product._id || product.id} product={product} />
           ))}
         </div>
+
+        {!loading && featuredItems.length === 0 && (
+          <StateBlock
+            title="No featured products yet"
+            message="New arrivals will appear here once products are available."
+            actionLabel="Browse all products"
+            actionTo="/products"
+          />
+        )}
       </section>
 
       <section className="home-cta-band page-wrap">

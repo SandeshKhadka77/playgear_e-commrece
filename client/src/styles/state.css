@@ -1,0 +1,79 @@
+.state-block {
+  border: 1px solid #dce8f4;
+  border-radius: 14px;
+  padding: 22px;
+  background: #f8fbff;
+  text-align: center;
+}
+
+.state-block.error {
+  border-color: #f3c4c4;
+  background: #fff4f4;
+}
+
+.state-block .state-icon {
+  display: inline-flex;
+  font-size: 1.4rem;
+  color: #26507a;
+  margin-bottom: 8px;
+}
+
+.state-block.error .state-icon {
+  color: #b33b3b;
+}
+
+.state-block h3 {
+  color: #12385c;
+  margin-bottom: 6px;
+}
+
+.state-block p {
+  color: #5b7792;
+}
+
+.state-action {
+  margin-top: 10px;
+  display: inline-flex;
+  font-weight: 700;
+  color: #1f4b74;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #eef3f9 25%, #dfe9f4 37%, #eef3f9 63%);
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.2s ease-in-out infinite;
+  border-radius: 10px;
+}
+
+.product-skeleton {
+  border: 1px solid #e5ecf5;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.skeleton-image {
+  aspect-ratio: 1;
+}
+
+.skeleton-content {
+  padding: 16px;
+}
+
+.skeleton-line {
+  height: 12px;
+  margin-bottom: 10px;
+}
+
+.skeleton-line.title {
+  height: 16px;
+}
+
+.skeleton-line.short {
+  width: 55%;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0 0; }
+}

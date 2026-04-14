@@ -7,6 +7,8 @@ import { products } from '../data/products.js';
 import { useCart } from '../hooks/useCart';
 import { useToast } from '../hooks/useToast';
 import ProductCard from '../components/ProductCard';
+import ProductCardSkeleton from '../components/ProductCardSkeleton';
+import StateBlock from '../components/StateBlock';
 import '../styles/ProductDetail.css';
 
 const ProductDetail = () => {
@@ -17,6 +19,7 @@ const ProductDetail = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [qty, setQty] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -30,9 +33,12 @@ const ProductDetail = () => {
           .filter((item) => item.category === data.category)
           .slice(0, 4);
         setRelatedProducts(related);
-      } catch {
+      } catch (requestError) {
         const localProduct = products.find((p) => String(p.id) === String(id));
         setProduct(localProduct || null);
+        if (!localProduct) {
+          setError(requestError?.response?.data?.message || 'Could not load this product.');
+        }
 
         if (localProduct) {
           const related = products
@@ -49,9 +55,32 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
-  if (loading) return <div className="product-detail-state">Loading product details...</div>;
+  if (loading) {
+    return (
+      <div className="product-detail-shell">
+        <div className="product-detail-state-grid">
+          <ProductCardSkeleton />
+          <ProductCardSkeleton />
+          <ProductCardSkeleton />
+          <ProductCardSkeleton />
+        </div>
+      </div>
+    );
+  }
 
-  if (!product) return <div className="product-detail-state">Product not found.</div>;
+  if (!product) {
+    return (
+      <div className="product-detail-shell">
+        <StateBlock
+          tone="error"
+          title="Product not found"
+          message={error || 'This product may have been removed or is currently unavailable.'}
+          actionLabel="Back to products"
+          actionTo="/products"
+        />
+      </div>
+    );
+  }
 
   const increaseQty = () => setQty((prev) => Math.min(99, prev + 1));
   const decreaseQty = () => setQty((prev) => Math.max(1, prev - 1));

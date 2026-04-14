@@ -1,5 +1,6 @@
 ﻿import React, { useEffect, useMemo, useState } from 'react';
 import api from '../lib/apiClient';
+import StateBlock from '../components/StateBlock';
 import '../styles/staticPages.css';
 
 const getStatusStep = (status) => {
@@ -48,7 +49,33 @@ const MyOrdersPage = () => {
     [orders]
   );
 
-  if (loading) return <div className="static-page-shell"><div className="static-page-card">Loading your orders...</div></div>;
+  if (loading) {
+    return (
+      <div className="static-page-shell">
+        <div className="static-page-card">
+          <StateBlock title="Loading your orders" message="Fetching your latest order history." />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="static-page-shell">
+        <div className="static-page-card">
+          <h1>My Orders</h1>
+          <p className="static-subtitle">Track your latest purchases and delivery progress.</p>
+          <StateBlock
+            tone="error"
+            title="Unable to load orders"
+            message={error}
+            actionLabel="Login"
+            actionTo="/login"
+          />
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="static-page-shell">
@@ -56,59 +83,57 @@ const MyOrdersPage = () => {
         <h1>My Orders</h1>
         <p className="static-subtitle">Track your latest purchases and delivery progress.</p>
 
-        {error && <p className="admin-alert error">{error}</p>}
+        <div className="order-meta-row">
+          <p>Total Orders: <strong>{orders.length}</strong></p>
+          <p>Total Spent: <strong>Rs. {totalSpent.toLocaleString()}</strong></p>
+        </div>
 
-        {!error && (
-          <>
-            <div className="order-meta-row">
-              <p>Total Orders: <strong>{orders.length}</strong></p>
-              <p>Total Spent: <strong>Rs. {totalSpent.toLocaleString()}</strong></p>
-            </div>
-
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Date</th>
-                  <th>Items</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.map((order) => (
-                  <tr key={order._id}>
-                    <td>#{String(order._id).slice(-6)}</td>
-                    <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-                    <td>{order.orderItems?.length || 0}</td>
-                    <td>Rs. {Number(order.totalPrice || 0).toLocaleString()}</td>
-                    <td>
-                      <div className="status-cell">
-                        <span className={`badge ${order.status === 'Delivered' ? 'success' : 'warning'}`}>
-                          {order.status}
-                        </span>
-                        <div className="timeline-dots" aria-hidden="true">
-                          {[1, 2, 3, 4].map((step) => (
-                            <span
-                              key={step}
-                              className={`dot ${getStatusStep(order.status) >= step ? 'active' : ''}`}
-                            />
-                          ))}
-                        </div>
+        {orders.length === 0 ? (
+          <StateBlock
+            title="No orders yet"
+            message="Start shopping and your orders will show here."
+            actionLabel="Browse products"
+            actionTo="/products"
+          />
+        ) : (
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>#{String(order._id).slice(-6)}</td>
+                  <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                  <td>{order.orderItems?.length || 0}</td>
+                  <td>Rs. {Number(order.totalPrice || 0).toLocaleString()}</td>
+                  <td>
+                    <div className="status-cell">
+                      <span className={`badge ${order.status === 'Delivered' ? 'success' : 'warning'}`}>
+                        {order.status}
+                      </span>
+                      <div className="timeline-dots" aria-hidden="true">
+                        {[1, 2, 3, 4].map((step) => (
+                          <span
+                            key={step}
+                            className={`dot ${getStatusStep(order.status) >= step ? 'active' : ''}`}
+                          />
+                        ))}
                       </div>
-                    </td>
-                  </tr>
-                ))}
-
-                {orders.length === 0 && (
-                  <tr>
-                    <td colSpan="5" className="orders-empty-cell">No orders placed yet.</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
+
       </div>
     </section>
   );

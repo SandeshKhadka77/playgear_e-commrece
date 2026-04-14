@@ -139,6 +139,11 @@
   opacity: 0.94;
 }
 
+.checkout-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 .continue-shopping {
   display: block;
   text-align: center;

@@ -11,6 +11,7 @@ const Cart = () => {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const [placingOrder, setPlacingOrder] = React.useState(false);
 
   const totalPrice = cart.reduce((acc, item) => acc + ((Number(item.price) || 0) * (item.qty || 1)), 0);
 
@@ -28,6 +29,7 @@ const Cart = () => {
 
   const checkoutHandler = async () => {
     try {
+      setPlacingOrder(true);
       const userInfo = JSON.parse(localStorage.getItem('userInfo') || 'null');
       const token = userInfo?.token;
 
@@ -60,6 +62,8 @@ const Cart = () => {
       navigate('/products');
     } catch (requestError) {
       showToast(requestError?.response?.data?.message || 'Could not place order.', 'error');
+    } finally {
+      setPlacingOrder(false);
     }
   };
 
@@ -119,9 +123,9 @@ const Cart = () => {
                 <span>Total</span>
                 <span>Rs. {totalPrice.toLocaleString()}</span>
               </div>
-              <button className="checkout-btn" type="button" onClick={checkoutHandler}>
+              <button className="checkout-btn" type="button" onClick={checkoutHandler} disabled={placingOrder}>
                 <FiShoppingBag />
-                <span>Proceed to Checkout</span>
+                <span>{placingOrder ? 'Placing Order...' : 'Proceed to Checkout'}</span>
               </button>
               <Link to="/products" className="continue-shopping">Continue Shopping</Link>
             </div>
