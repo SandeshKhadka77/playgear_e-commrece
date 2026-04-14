@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { FiMinus, FiPlus, FiShoppingBag, FiTrash2 } from 'react-icons/fi';
@@ -46,7 +46,7 @@ const Cart = () => {
       }));
 
       await axios.post(
-        'http://localhost:5000/api/orders',
+        '/api/orders',
         {
           orderItems,
           shippingPrice: 0,

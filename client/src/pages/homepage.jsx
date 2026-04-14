@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+﻿import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
@@ -13,7 +13,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/products');
+        const { data } = await axios.get('/api/products');
         setProducts(Array.isArray(data) ? data.slice(0, 8) : []);
       } catch {
         setProducts(fallbackProducts.map((item) => ({ ...item, _id: item.id })));

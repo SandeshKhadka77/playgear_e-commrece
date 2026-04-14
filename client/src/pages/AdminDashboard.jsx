@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FiActivity, FiBox, FiCheckCircle, FiDollarSign, FiShoppingCart, FiUsers } from 'react-icons/fi';
 import '../styles/admin.css';
@@ -19,7 +19,7 @@ const AdminDashboard = () => {
       try {
         setLoading(true);
         //  this URL matches our backend route
-        const { data } = await axios.get('http://localhost:5000/api/products/admin/stats');
+        const { data } = await axios.get('/api/products/admin/stats');
         setStats(data);
         setLoading(false);
       } catch (error) {

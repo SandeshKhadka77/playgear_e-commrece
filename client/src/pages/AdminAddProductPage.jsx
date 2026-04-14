@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import axios from 'axios';
 import { FiCheckCircle, FiSave } from 'react-icons/fi';
 import '../styles/admin.css';
@@ -35,7 +35,7 @@ const AdminAddProductPage = () => {
 
 		try {
 			setSaving(true);
-			await axios.post('http://localhost:5000/api/products', {
+			await axios.post('/api/products', {
 				...form,
 				price: Number(form.price),
 				countInStock: Number(form.countInStock),
@@ -142,3 +142,4 @@ const AdminAddProductPage = () => {
 };
 
 export default AdminAddProductPage;
+

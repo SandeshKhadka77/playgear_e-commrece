@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+﻿import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import '../styles/admin.css';
 import { useToast } from '../hooks/useToast';
@@ -29,8 +29,8 @@ const AdminOrders = () => {
         }
 
         const [{ data: statsData }, { data: orderData }] = await Promise.all([
-          axios.get('http://localhost:5000/api/products/admin/stats'),
-          axios.get('http://localhost:5000/api/orders', {
+          axios.get('/api/products/admin/stats'),
+          axios.get('/api/orders', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -63,7 +63,7 @@ const AdminOrders = () => {
       }
 
       const { data } = await axios.put(
-        `http://localhost:5000/api/orders/${orderId}/status`,
+        `/api/orders/${orderId}/status`,
         { status: nextStatus },
         {
           headers: {
@@ -207,7 +207,7 @@ const AdminOrders = () => {
           <div className="admin-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
             <div className="admin-modal-head">
               <h3>Order #{String(selectedOrder._id).slice(-6)}</h3>
-              <button type="button" onClick={() => setSelectedOrder(null)}>×</button>
+              <button type="button" onClick={() => setSelectedOrder(null)}>Ã—</button>
             </div>
 
             <p><strong>Customer:</strong> {selectedOrder.user?.name || selectedOrder.user?.email || 'Unknown'}</p>
@@ -219,7 +219,7 @@ const AdminOrders = () => {
               {(selectedOrder.orderItems || []).map((item, index) => (
                 <li key={`${item.product || item.name}-${index}`}>
                   <span>{item.name}</span>
-                  <span>{item.qty} × Rs. {Number(item.price || 0).toLocaleString()}</span>
+                  <span>{item.qty} Ã— Rs. {Number(item.price || 0).toLocaleString()}</span>
                 </li>
               ))}
             </ul>

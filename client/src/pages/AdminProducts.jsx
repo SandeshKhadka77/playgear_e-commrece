@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import '../styles/admin.css';
@@ -13,7 +13,7 @@ const AdminProducts = () => {
   useEffect(() => {
     const getInventory = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/products');
+        const { data } = await axios.get('/api/products');
         setProducts(data);
       } catch (error) {
         console.error("Fetch Error:", error.message);
@@ -27,7 +27,7 @@ const AdminProducts = () => {
   const deleteHandler = async (id) => {
     if (window.confirm('Remove this item?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/products/${id}`);
+        await axios.delete(`/api/products/${id}`);
         setProducts((prev) => prev.filter((p) => p._id !== id));
         showToast('Product removed.', 'success');
       } catch (err) {

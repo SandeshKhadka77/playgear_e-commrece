@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -21,10 +21,10 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const { data } = await axios.get(`/api/products/${id}`);
         setProduct(data);
 
-        const allProducts = await axios.get('http://localhost:5000/api/products');
+        const allProducts = await axios.get('/api/products');
         const related = allProducts.data
           .filter((item) => String(item._id) !== String(data._id))
           .filter((item) => item.category === data.category)

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+﻿import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import '../styles/staticPages.css';
 
@@ -30,7 +30,7 @@ const MyOrdersPage = () => {
           return;
         }
 
-        const { data } = await axios.get('http://localhost:5000/api/orders/my', {
+        const { data } = await axios.get('/api/orders/my', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -119,3 +119,4 @@ const MyOrdersPage = () => {
 };
 
 export default MyOrdersPage;
+

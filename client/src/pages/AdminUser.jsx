@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+﻿import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import '../styles/admin.css';
 
@@ -24,7 +24,7 @@ const AdminUsers = () => {
           return;
         }
 
-        const { data } = await axios.get('http://localhost:5000/api/users', {
+        const { data } = await axios.get('/api/users', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
