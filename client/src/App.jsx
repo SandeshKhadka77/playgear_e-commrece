@@ -10,6 +10,7 @@ import AdminLayout from './components/admin/AdminLayout';
 import AdminOrders from './pages/AdminOrders';
 import AdminUsers from './pages/AdminUser';
 import AdminAddProductPage from './pages/AdminAddProductPage';
+import AdminEditProductPage from './pages/AdminEditProductPage';
 import LoginPage from './pages/LoginPage';
 import PoliciesPage from './pages/PoliciesPage';
 import ContactPage from './pages/ContactPage';
@@ -72,6 +73,12 @@ function App() {
           <Route path="/admin/addproduct" element={
             <AdminRoute>
               <AdminLayout><AdminAddProductPage /></AdminLayout>
+            </AdminRoute>
+          } />
+
+          <Route path="/admin/products/:id/edit" element={
+            <AdminRoute>
+              <AdminLayout><AdminEditProductPage /></AdminLayout>
             </AdminRoute>
           } />
         </Routes>

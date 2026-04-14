@@ -60,9 +60,12 @@ const AdminProducts = () => {
             <tr key={p._id}>
               <td>{p.name}</td>
               <td>{p.category}</td>
-              <td>Rs. {p.price}</td>
+              <td>Rs. {Number(p.price || 0).toLocaleString()}</td>
               <td>
-                <button className="btn-delete" onClick={() => deleteHandler(p._id)}>Delete</button>
+                <div className="product-action-row">
+                  <Link className="btn-edit" to={`/admin/products/${p._id}/edit`}>Edit</Link>
+                  <button className="btn-delete" onClick={() => deleteHandler(p._id)}>Delete</button>
+                </div>
               </td>
             </tr>
           ))}

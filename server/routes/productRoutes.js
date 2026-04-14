@@ -111,6 +111,63 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// @desc    Update a product
+// @route   PUT /api/products/:id
+router.put('/:id', async (req, res) => {
+  try {
+    const {
+      name,
+      description,
+      price,
+      category,
+      image,
+      countInStock,
+      rating,
+    } = req.body;
+
+    if (!name || !description || price === undefined || !category || !image) {
+      return res.status(400).json({
+        message: 'name, description, price, category and image are required',
+      });
+    }
+
+    const normalizedPrice = Number(price);
+    const normalizedStock = Number(countInStock ?? 0);
+    const normalizedRating = Number(rating ?? 0);
+
+    if (Number.isNaN(normalizedPrice) || normalizedPrice < 0) {
+      return res.status(400).json({ message: 'price must be a non-negative number' });
+    }
+
+    if (Number.isNaN(normalizedStock) || normalizedStock < 0) {
+      return res.status(400).json({ message: 'countInStock must be a non-negative number' });
+    }
+
+    if (Number.isNaN(normalizedRating) || normalizedRating < 0 || normalizedRating > 5) {
+      return res.status(400).json({ message: 'rating must be between 0 and 5' });
+    }
+
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    product.name = String(name).trim();
+    product.description = String(description).trim();
+    product.price = normalizedPrice;
+    product.category = String(category).trim();
+    product.image = String(image).trim();
+    product.countInStock = normalizedStock;
+    product.rating = normalizedRating;
+
+    const updated = await product.save();
+    return res.json(updated);
+  } catch (error) {
+    return res.status(500).json({ message: 'Server Error: Could not update product' });
+  }
+});
+
 // @desc    Delete a product
 // @route   DELETE /api/products/:id
 router.delete('/:id', async (req, res) => {
