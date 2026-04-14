@@ -49,6 +49,20 @@ const Navbar = () => {
         <ul className={`nav-menu ${isMenuOpen ? 'open' : ''}`}>
           <li><Link to="/" onClick={closeMenu}>Home</Link></li>
           <li><Link to="/products" onClick={closeMenu}>Products</Link></li>
+          <li>
+            <Link to="/wishlist" className="wishlist-btn" onClick={closeMenu}>
+              <FiHeart />
+              <span>Wishlist</span>
+              <span className="wishlist-count">{wishlistCount}</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/cart" className="cart-btn" onClick={closeMenu}>
+              <FiShoppingCart />
+              <span>Cart</span>
+              <span className="cart-count">{totalItems}</span>
+            </Link>
+          </li>
           {!userInfo ? (
             <li>
               <Link to="/login" className="profile-link" onClick={closeMenu}>
@@ -81,24 +95,10 @@ const Navbar = () => {
             </>
           )}
           <li>
-            <Link to="/wishlist" className="wishlist-btn" onClick={closeMenu}>
-              <FiHeart />
-              <span>Wishlist</span>
-              <span className="wishlist-count">{wishlistCount}</span>
-            </Link>
-          </li>
-          <li>
             <Link to="/compare" className="compare-btn" onClick={closeMenu}>
               <FiSliders />
               <span>Compare</span>
               <span className="compare-count">{compareCount}</span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/cart" className="cart-btn" onClick={closeMenu}>
-              <FiShoppingCart />
-              <span>Cart</span>
-              <span className="cart-count">{totalItems}</span>
             </Link>
           </li>
         </ul>
