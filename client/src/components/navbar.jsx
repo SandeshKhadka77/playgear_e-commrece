@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiLogOut, FiMenu, FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
+import { FiHeart, FiLogOut, FiMenu, FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
 import '../styles/navbar.css';
 import { useCart } from '../hooks/useCart'; 
+import { useWishlist } from '../hooks/useWishlist';
 import { useState } from 'react';
 
 const Navbar = () => {
   const { totalItems } = useCart();
+  const { wishlistCount } = useWishlist();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userInfo = JSON.parse(localStorage.getItem('userInfo') || 'null');
@@ -76,6 +78,13 @@ const Navbar = () => {
               </li>
             </>
           )}
+          <li>
+            <Link to="/wishlist" className="wishlist-btn" onClick={closeMenu}>
+              <FiHeart />
+              <span>Wishlist</span>
+              <span className="wishlist-count">{wishlistCount}</span>
+            </Link>
+          </li>
           <li>
             <Link to="/cart" className="cart-btn" onClick={closeMenu}>
               <FiShoppingCart />

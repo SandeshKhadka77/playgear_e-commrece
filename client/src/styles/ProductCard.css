@@ -44,6 +44,28 @@
   color: #fff;
 }
 
+.wishlist-icon-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: 1px solid #d6e6f7;
+  background: #fff;
+  color: #2b4d71;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.wishlist-icon-btn.active {
+  background: #fff0f0;
+  border-color: #ffd0d0;
+  color: #ca3f3f;
+}
+
 .product-content {
   padding: 16px;
 }

@@ -1,17 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FiShoppingBag } from 'react-icons/fi';
+import { FiHeart, FiShoppingBag } from 'react-icons/fi';
 import { IoStar, IoStarHalf } from 'react-icons/io5';
 import '../styles/ProductCard.css';
 import { useCart } from '../hooks/useCart';
 import { useToast } from '../hooks/useToast';
+import { useWishlist } from '../hooks/useWishlist';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const { showToast } = useToast();
 
   const rating = Number(product.rating || 4.5);
   const roundedRating = Math.round(rating * 2) / 2;
+  const productId = product._id || product.id;
+  const liked = isInWishlist(productId);
 
   const renderStars = () => {
     const stars = [];
@@ -39,6 +43,19 @@ const ProductCard = ({ product }) => {
           <span className="category-chip">
             {product.category}
           </span>
+          <button
+            type="button"
+            className={`wishlist-icon-btn ${liked ? 'active' : ''}`}
+            aria-label="Toggle wishlist"
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              toggleWishlist(product);
+              showToast(liked ? `${product.name} removed from wishlist.` : `${product.name} saved to wishlist.`, 'info');
+            }}
+          >
+            <FiHeart />
+          </button>
         </div>
       </Link>
 

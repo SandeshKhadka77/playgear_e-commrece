@@ -5,13 +5,16 @@ import './styles/state.css'
 import App from './App.jsx'
 import { CartProvider } from './context/CartProvider'
 import { ToastProvider } from './context/ToastProvider'
+import { WishlistProvider } from './context/WishlistProvider'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ToastProvider>
-      <CartProvider>
-        <App />
-      </CartProvider>
+      <WishlistProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </WishlistProvider>
     </ToastProvider>
   </StrictMode>,
 )
