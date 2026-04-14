@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { WishlistContext } from './WishlistContext';
 
 const WISHLIST_STORAGE_KEY = 'wishlistItems';
@@ -52,18 +52,15 @@ export const WishlistProvider = ({ children }) => {
 
   const clearWishlist = () => setWishlist([]);
 
-  const value = useMemo(
-    () => ({
-      wishlist,
-      wishlistCount: wishlist.length,
-      addToWishlist,
-      removeFromWishlist,
-      toggleWishlist,
-      clearWishlist,
-      isInWishlist,
-    }),
-    [wishlist]
-  );
+  const value = {
+    wishlist,
+    wishlistCount: wishlist.length,
+    addToWishlist,
+    removeFromWishlist,
+    toggleWishlist,
+    clearWishlist,
+    isInWishlist,
+  };
 
   return <WishlistContext.Provider value={value}>{children}</WishlistContext.Provider>;
 };
