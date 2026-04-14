@@ -16,8 +16,10 @@ import PoliciesPage from './pages/PoliciesPage';
 import ContactPage from './pages/ContactPage';
 import MyOrdersPage from './pages/MyOrdersPage';
 import WishlistPage from './pages/WishlistPage';
+import ComparePage from './pages/ComparePage';
 import Footer from './components/Footer';
 import './index.css';
+import './styles/compare.css';
 
 
 //  SECURITY PROTECTOR COMPONENT
@@ -43,6 +45,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/compare" element={<ComparePage />} />
           <Route path="/my-orders" element={<MyOrdersPage />} />
           <Route path="/policies" element={<PoliciesPage />} />
           <Route path="/contact" element={<ContactPage />} />

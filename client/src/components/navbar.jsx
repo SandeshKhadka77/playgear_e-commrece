@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiHeart, FiLogOut, FiMenu, FiSearch, FiShoppingCart, FiUser, FiX } from 'react-icons/fi';
+import { FiHeart, FiLogOut, FiMenu, FiSearch, FiShoppingCart, FiSliders, FiUser, FiX } from 'react-icons/fi';
 import '../styles/navbar.css';
 import { useCart } from '../hooks/useCart'; 
 import { useWishlist } from '../hooks/useWishlist';
+import { useCompare } from '../hooks/useCompare';
 import { useState } from 'react';
 
 const Navbar = () => {
   const { totalItems } = useCart();
   const { wishlistCount } = useWishlist();
+  const { compareCount } = useCompare();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const userInfo = JSON.parse(localStorage.getItem('userInfo') || 'null');
@@ -83,6 +85,13 @@ const Navbar = () => {
               <FiHeart />
               <span>Wishlist</span>
               <span className="wishlist-count">{wishlistCount}</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/compare" className="compare-btn" onClick={closeMenu}>
+              <FiSliders />
+              <span>Compare</span>
+              <span className="compare-count">{compareCount}</span>
             </Link>
           </li>
           <li>

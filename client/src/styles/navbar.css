@@ -122,6 +122,28 @@
   font-weight: 600;
 }
 
+.compare-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ecf3fa !important;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.compare-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ecf3fa !important;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
 .cart-count {
   min-width: 20px;
   height: 20px;
@@ -143,6 +165,30 @@
   justify-content: center;
   font-size: 0.75rem;
   background: #ff8a00;
+  color: #fff;
+}
+
+.compare-count {
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  background: #4f8cc9;
+  color: #fff;
+}
+
+.compare-count {
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  background: #4f8cc9;
   color: #fff;
 }
 
@@ -202,6 +248,14 @@
   }
 
   .wishlist-btn {
+    justify-content: center;
+  }
+
+  .compare-btn {
+    justify-content: center;
+  }
+
+  .compare-btn {
     justify-content: center;
   }
 }

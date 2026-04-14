@@ -4,11 +4,13 @@ import { FiHeart, FiShoppingBag } from 'react-icons/fi';
 import { IoStar, IoStarHalf } from 'react-icons/io5';
 import '../styles/ProductCard.css';
 import { useCart } from '../hooks/useCart';
+import { useCompare } from '../hooks/useCompare';
 import { useToast } from '../hooks/useToast';
 import { useWishlist } from '../hooks/useWishlist';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
+  const { toggleCompare, isInCompare, maxCompareItems, compareCount } = useCompare();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { showToast } = useToast();
 
@@ -16,6 +18,7 @@ const ProductCard = ({ product }) => {
   const roundedRating = Math.round(rating * 2) / 2;
   const productId = product._id || product.id;
   const liked = isInWishlist(productId);
+  const compared = isInCompare(productId);
 
   const renderStars = () => {
     const stars = [];
@@ -71,17 +74,48 @@ const ProductCard = ({ product }) => {
         </div>
         <div className="card-footer">
           <span className="product-price">Rs. {Number(product.price || 0).toLocaleString()}</span>
-          <button
-            className="add-to-cart-btn"
-            type="button"
-            onClick={() => {
-              addToCart(product);
-              showToast(`${product.name} added to cart.`, 'success');
-            }}
-          >
-            <FiShoppingBag />
-            <span>Add</span>
-          </button>
+          <div className="card-action-row">
+            <button
+              className={`compare-card-btn ${compared ? 'active' : ''}`}
+              type="button"
+              onClick={() => {
+                const result = toggleCompare(product);
+                if (result.reason === 'limit') {
+                  showToast(`You can compare up to ${maxCompareItems} products only.`, 'error');
+                  return;
+                }
+
+                if (result.reason === 'added') {
+                  showToast(`${product.name} added to compare.`, 'info');
+                  return;
+                }
+
+                if (result.reason === 'removed') {
+                  showToast(`${product.name} removed from compare.`, 'info');
+                  return;
+                }
+
+                if (result.reason === 'exists') {
+                  showToast(`${product.name} is already in compare list.`, 'info');
+                }
+              }}
+            >
+              <span>{compared ? 'Compared' : 'Compare'}</span>
+              <small>{compareCount}/{maxCompareItems}</small>
+            </button>
+
+            <button
+              className="add-to-cart-btn"
+              type="button"
+              onClick={() => {
+                addToCart(product);
+                showToast(`${product.name} added to cart.`, 'success');
+              }}
+            >
+              <FiShoppingBag />
+              <span>Add</span>
+            </button>
+          </div>
         </div>
       </div>
     </article>

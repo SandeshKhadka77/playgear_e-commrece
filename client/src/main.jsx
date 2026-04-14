@@ -7,16 +7,19 @@ import { CartProvider } from './context/CartProvider'
 import { ToastProvider } from './context/ToastProvider'
 import { WishlistProvider } from './context/WishlistProvider'
 import { RecentlyViewedProvider } from './context/RecentlyViewedProvider'
+import { CompareProvider } from './context/CompareProvider'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ToastProvider>
       <RecentlyViewedProvider>
-        <WishlistProvider>
-          <CartProvider>
-            <App />
-          </CartProvider>
-        </WishlistProvider>
+        <CompareProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <App />
+            </CartProvider>
+          </WishlistProvider>
+        </CompareProvider>
       </RecentlyViewedProvider>
     </ToastProvider>
   </StrictMode>,

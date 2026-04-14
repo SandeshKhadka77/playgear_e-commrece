@@ -1,0 +1,105 @@
+.compare-shell {
+  width: min(1200px, 92vw);
+  margin: 30px auto 64px;
+}
+
+.compare-head {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.compare-head h1 {
+  color: #112f4d;
+  font-family: var(--font-heading);
+}
+
+.compare-clear-btn {
+  border: 1px solid #d7e6f6;
+  border-radius: 10px;
+  background: #f5f9ff;
+  color: #1e4b74;
+  padding: 9px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.compare-table-wrap {
+  background: #fff;
+  border: 1px solid #e2ebf5;
+  border-radius: 16px;
+  overflow: auto;
+  box-shadow: 0 10px 24px rgba(12, 30, 58, 0.08);
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.compare-table th,
+.compare-table td {
+  border-bottom: 1px solid #edf2f8;
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.compare-table th {
+  background: #f5f9ff;
+  color: #183e62;
+}
+
+.compare-table td:first-child,
+.compare-table th:first-child {
+  width: 140px;
+  font-weight: 700;
+  color: #385575;
+}
+
+.compare-thumb {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #f4f8fd;
+  padding: 8px;
+}
+
+.compare-actions {
+  display: inline-flex;
+  gap: 8px;
+}
+
+.compare-cart-btn,
+.compare-remove-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.compare-cart-btn {
+  color: #fff;
+  background: linear-gradient(120deg, #ff8a00, #f2542d);
+}
+
+.compare-remove-btn {
+  background: #fff0f0;
+  color: #b83232;
+}
+
+@media (max-width: 640px) {
+  .compare-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
