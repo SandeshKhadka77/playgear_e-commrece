@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
+import api from '../lib/apiClient';
 import '../styles/admin.css';
 
 const PAGE_SIZE = 10;
@@ -24,11 +24,7 @@ const AdminUsers = () => {
           return;
         }
 
-        const { data } = await axios.get('/api/users', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const { data } = await api.get('/api/users');
         setUsers(data);
       } catch (requestError) {
         setError(requestError?.response?.data?.message || 'Unable to fetch users.');
@@ -125,3 +121,4 @@ const AdminUsers = () => {
 };
 
 export default AdminUsers;
+

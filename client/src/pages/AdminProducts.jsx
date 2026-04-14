@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../lib/apiClient';
 import { Link } from 'react-router-dom';
 import '../styles/admin.css';
 import { useToast } from '../hooks/useToast';
@@ -13,7 +13,7 @@ const AdminProducts = () => {
   useEffect(() => {
     const getInventory = async () => {
       try {
-        const { data } = await axios.get('/api/products');
+        const { data } = await api.get('/api/products');
         setProducts(data);
       } catch (error) {
         console.error("Fetch Error:", error.message);
@@ -27,7 +27,7 @@ const AdminProducts = () => {
   const deleteHandler = async (id) => {
     if (window.confirm('Remove this item?')) {
       try {
-        await axios.delete(`/api/products/${id}`);
+        await api.delete(`/api/products/${id}`);
         setProducts((prev) => prev.filter((p) => p._id !== id));
         showToast('Product removed.', 'success');
       } catch (err) {
@@ -73,3 +73,4 @@ const AdminProducts = () => {
 };
 
 export default AdminProducts;
+

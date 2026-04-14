@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../lib/apiClient';
 import { FiMinus, FiPlus, FiShoppingBag, FiTrash2 } from 'react-icons/fi';
 import { useCart } from '../hooks/useCart';
 import { useToast } from '../hooks/useToast';
@@ -45,18 +45,13 @@ const Cart = () => {
         price: Number(item.price) || 0,
       }));
 
-      await axios.post(
+      await api.post(
         '/api/orders',
         {
           orderItems,
           shippingPrice: 0,
           taxPrice: 0,
           totalPrice,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 
@@ -138,3 +133,4 @@ const Cart = () => {
 };
 
 export default Cart;
+

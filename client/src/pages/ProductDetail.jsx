@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../lib/apiClient';
 import { FiCheckCircle, FiMinus, FiPlus, FiShoppingBag } from 'react-icons/fi';
 import { products } from '../data/products.js';
 import { useCart } from '../hooks/useCart';
@@ -21,10 +21,10 @@ const ProductDetail = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get(`/api/products/${id}`);
+        const { data } = await api.get(`/api/products/${id}`);
         setProduct(data);
 
-        const allProducts = await axios.get('/api/products');
+        const allProducts = await api.get('/api/products');
         const related = allProducts.data
           .filter((item) => String(item._id) !== String(data._id))
           .filter((item) => item.category === data.category)
@@ -122,3 +122,4 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+

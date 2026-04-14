@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
+import api from '../lib/apiClient';
 import '../styles/staticPages.css';
 
 const getStatusStep = (status) => {
@@ -30,11 +30,7 @@ const MyOrdersPage = () => {
           return;
         }
 
-        const { data } = await axios.get('/api/orders/my', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const { data } = await api.get('/api/orders/my');
 
         setOrders(Array.isArray(data) ? data : []);
       } catch (requestError) {
@@ -119,4 +115,5 @@ const MyOrdersPage = () => {
 };
 
 export default MyOrdersPage;
+
 

@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
+import api from '../lib/apiClient';
 import '../styles/admin.css';
 import { useToast } from '../hooks/useToast';
 
@@ -29,12 +29,8 @@ const AdminOrders = () => {
         }
 
         const [{ data: statsData }, { data: orderData }] = await Promise.all([
-          axios.get('/api/products/admin/stats'),
-          axios.get('/api/orders', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }),
+          api.get('/api/products/admin/stats'),
+          api.get('/api/orders'),
         ]);
 
         setStats({
@@ -62,14 +58,9 @@ const AdminOrders = () => {
         return;
       }
 
-      const { data } = await axios.put(
+      const { data } = await api.put(
         `/api/orders/${orderId}/status`,
-        { status: nextStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { status: nextStatus }
       );
 
       setOrders((prev) => prev.map((order) => (order._id === orderId ? data : order)));
@@ -207,7 +198,7 @@ const AdminOrders = () => {
           <div className="admin-modal" role="dialog" aria-modal="true" onClick={(event) => event.stopPropagation()}>
             <div className="admin-modal-head">
               <h3>Order #{String(selectedOrder._id).slice(-6)}</h3>
-              <button type="button" onClick={() => setSelectedOrder(null)}>Ã—</button>
+              <button type="button" onClick={() => setSelectedOrder(null)}>x</button>
             </div>
 
             <p><strong>Customer:</strong> {selectedOrder.user?.name || selectedOrder.user?.email || 'Unknown'}</p>
@@ -219,7 +210,7 @@ const AdminOrders = () => {
               {(selectedOrder.orderItems || []).map((item, index) => (
                 <li key={`${item.product || item.name}-${index}`}>
                   <span>{item.name}</span>
-                  <span>{item.qty} Ã— Rs. {Number(item.price || 0).toLocaleString()}</span>
+                  <span>{item.qty} x Rs. {Number(item.price || 0).toLocaleString()}</span>
                 </li>
               ))}
             </ul>
@@ -231,3 +222,4 @@ const AdminOrders = () => {
 };
 
 export default AdminOrders;
+

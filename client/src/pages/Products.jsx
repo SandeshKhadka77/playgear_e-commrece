@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useMemo, useState } from 'react';
-import axios from 'axios';
+import api from '../lib/apiClient';
 import { FiSearch, FiSliders } from 'react-icons/fi';
 import ProductCard from '../components/ProductCard';
 import '../styles/ProductsPage.css'; 
@@ -17,7 +17,7 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { data } = await axios.get('/api/products');
+        const { data } = await api.get('/api/products');
         setProducts(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -149,3 +149,4 @@ const Products = () => {
 };
 
 export default Products;
+
