@@ -5,6 +5,7 @@ import api from '../lib/apiClient';
 import { FiCheckCircle, FiMinus, FiPlus, FiShoppingBag } from 'react-icons/fi';
 import { products } from '../data/products.js';
 import { useCart } from '../hooks/useCart';
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { useToast } from '../hooks/useToast';
 import ProductCard from '../components/ProductCard';
 import ProductCardSkeleton from '../components/ProductCardSkeleton';
@@ -14,6 +15,7 @@ import '../styles/ProductDetail.css';
 const ProductDetail = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const { trackViewedProduct } = useRecentlyViewed();
   const { showToast } = useToast();
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -54,6 +56,12 @@ const ProductDetail = () => {
 
     fetchProduct();
   }, [id]);
+
+  useEffect(() => {
+    if (product) {
+      trackViewedProduct(product);
+    }
+  }, [product, trackViewedProduct]);
 
   if (loading) {
     return (

@@ -219,6 +219,10 @@
   padding: 56px 0 64px;
 }
 
+.recent-section {
+  padding: 8px 0 34px;
+}
+
 .section-head h2 {
   font-family: var(--font-heading);
   color: #102a43;

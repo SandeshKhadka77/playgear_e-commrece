@@ -6,15 +6,18 @@ import App from './App.jsx'
 import { CartProvider } from './context/CartProvider'
 import { ToastProvider } from './context/ToastProvider'
 import { WishlistProvider } from './context/WishlistProvider'
+import { RecentlyViewedProvider } from './context/RecentlyViewedProvider'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ToastProvider>
-      <WishlistProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
-      </WishlistProvider>
+      <RecentlyViewedProvider>
+        <WishlistProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </WishlistProvider>
+      </RecentlyViewedProvider>
     </ToastProvider>
   </StrictMode>,
 )

@@ -7,10 +7,12 @@ import StateBlock from '../components/StateBlock';
 import { FiArrowRight, FiCpu, FiShield, FiTarget, FiTrendingUp, FiTruck } from 'react-icons/fi';
 import '../styles/homepage.css';
 import { products as fallbackProducts } from '../data/products';
+import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { recentlyViewed } = useRecentlyViewed();
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
@@ -28,6 +30,10 @@ const HomePage = () => {
   }, []);
 
   const featuredItems = useMemo(() => products.slice(0, 4), [products]);
+  const recentItems = useMemo(
+    () => recentlyViewed.filter((item) => !!(item._id || item.id)).slice(0, 4),
+    [recentlyViewed]
+  );
 
   return (
     <div className="home-page">
@@ -119,6 +125,21 @@ const HomePage = () => {
           />
         )}
       </section>
+
+      {recentItems.length > 0 && (
+        <section className="recent-section page-wrap">
+          <div className="section-head">
+            <h2>Recently Viewed</h2>
+            <p>Pick up where you left off and continue browsing quickly.</p>
+          </div>
+
+          <div className="featured-grid">
+            {recentItems.map((product) => (
+              <ProductCard key={product._id || product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="home-cta-band page-wrap">
         <div>
