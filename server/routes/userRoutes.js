@@ -21,7 +21,7 @@ router.get('/', protect, admin, async (req, res) => {
 // 1. REGISTER ROUTE (This is what you need for Thunder Client)
 // @route   POST /api/users
 router.post('/', async (req, res) => {
-    const { name, email, password, isAdmin } = req.body;
+    const { name, email, password } = req.body;
 
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
         name,
         email,
         password, // This will be hashed by the 'pre-save' hook in  User Model
-        isAdmin: isAdmin || false,
+        isAdmin: false,
     });
 
     if (user) {

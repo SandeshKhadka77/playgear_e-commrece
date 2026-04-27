@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/orderModel');
+const Product = require('../models/product');
 const { protect, admin } = require('../middleware/authMiddleware');
 
 // @desc    Create a new order
@@ -13,20 +14,56 @@ router.post('/', protect, async (req, res) => {
       return res.status(400).json({ message: 'Order items are required' });
     }
 
-    const normalizedItems = orderItems.map((item) => ({
-      product: item.product,
-      name: item.name,
-      image: item.image,
-      qty: Number(item.qty) || 1,
-      price: Number(item.price) || 0,
-    }));
+    const shipping = Number(shippingPrice);
+    const tax = Number(taxPrice);
+
+    if (Number.isNaN(shipping) || shipping < 0) {
+      return res.status(400).json({ message: 'shippingPrice must be a non-negative number' });
+    }
+
+    if (Number.isNaN(tax) || tax < 0) {
+      return res.status(400).json({ message: 'taxPrice must be a non-negative number' });
+    }
+
+    const normalizedItems = [];
+    let itemsTotal = 0;
+
+    for (const item of orderItems) {
+      const productId = item.product;
+      const quantity = Number(item.qty);
+
+      if (!productId) {
+        return res.status(400).json({ message: 'Each order item must include a product id' });
+      }
+
+      if (!Number.isInteger(quantity) || quantity <= 0) {
+        return res.status(400).json({ message: 'Each order item qty must be a positive integer' });
+      }
+
+      const product = await Product.findById(productId);
+      if (!product) {
+        return res.status(400).json({ message: `Product not found for id ${productId}` });
+      }
+
+      normalizedItems.push({
+        product: product._id,
+        name: product.name,
+        image: product.image,
+        qty: quantity,
+        price: product.price,
+      });
+
+      itemsTotal += product.price * quantity;
+    }
+
+    const computedTotalPrice = itemsTotal + shipping + tax;
 
     const order = await Order.create({
       user: req.user._id,
       orderItems: normalizedItems,
-      shippingPrice: Number(shippingPrice) || 0,
-      taxPrice: Number(taxPrice) || 0,
-      totalPrice: Number(totalPrice) || 0,
+      shippingPrice: shipping,
+      taxPrice: tax,
+      totalPrice: computedTotalPrice,
       status: 'Pending',
     });
 

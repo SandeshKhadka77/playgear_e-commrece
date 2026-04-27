@@ -9,7 +9,6 @@
     "dev": "nodemon index.js",
     "data:import": "node seeder.js",
     "data:destroy": "node seeder.js -d",
-    "smoke:api": "node scripts/smokeApi.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

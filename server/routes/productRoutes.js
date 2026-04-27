@@ -3,6 +3,7 @@ const router = express.Router();
 const Product = require('../models/product'); // This imports your blueprint
 const Order = require('../models/orderModel');
 const User = require('../models/userModel');
+const { protect, admin } = require('../middleware/authMiddleware');
 
 // @desc    Fetch all products from MongoDB
 // @route   GET /api/products
@@ -18,7 +19,7 @@ router.get('/', async (req, res) => {
 
 // @desc    Create a product
 // @route   POST /api/products
-router.post('/', async (req, res) => {
+router.post('/', protect, admin, async (req, res) => {
   try {
     const {
       name,
@@ -71,7 +72,7 @@ router.post('/', async (req, res) => {
 // admin stats route
 // @desc    Get product, order, sales, and user stats for admin dashboard
 // @route   GET /api/products/admin/stats
-router.get('/admin/stats', async (req, res) => {
+router.get('/admin/stats', protect, admin, async (req, res) => {
   try {
     const productCount = await Product.countDocuments();
     const orderCount = await Order.countDocuments();
@@ -113,7 +114,7 @@ router.get('/:id', async (req, res) => {
 
 // @desc    Update a product
 // @route   PUT /api/products/:id
-router.put('/:id', async (req, res) => {
+router.put('/:id', protect, admin, async (req, res) => {
   try {
     const {
       name,
@@ -170,7 +171,7 @@ router.put('/:id', async (req, res) => {
 
 // @desc    Delete a product
 // @route   DELETE /api/products/:id
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protect, admin, async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
     if (product) {

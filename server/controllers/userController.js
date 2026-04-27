@@ -4,7 +4,7 @@ const generateToken = require('../utils/generateToken');
 // @desc    Register a new user
 // @route   POST /api/users
 const registerUser = async (req, res) => {
-    const { name, email, password, isAdmin } = req.body;
+    const { name, email, password } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -16,7 +16,7 @@ const registerUser = async (req, res) => {
         name,
         email,
         password,
-        isAdmin: isAdmin || false, // This captures the 'true' you sent in Thunder Client
+        isAdmin: false,
     });
 
     if (user) {
